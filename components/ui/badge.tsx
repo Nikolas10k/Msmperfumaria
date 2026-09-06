@@ -7,13 +7,13 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        gold: "bg-gold/15 text-gold-light border border-gold-hairline",
+        rose: "bg-rose/15 text-rose-light border border-rose-hairline",
         dark: "bg-surface-2 text-text-secondary border border-border",
         success: "bg-success/15 text-success border border-success/30",
         danger: "bg-danger/15 text-danger border border-danger/30",
       },
     },
-    defaultVariants: { variant: "gold" },
+    defaultVariants: { variant: "rose" },
   },
 );
 

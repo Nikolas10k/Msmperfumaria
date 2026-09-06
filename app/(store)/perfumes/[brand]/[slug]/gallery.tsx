@@ -31,7 +31,7 @@ export function Gallery({ images, alt }: { images: { url: string; altText: strin
               key={image.url}
               onClick={() => setActive(index)}
               className={`relative h-16 w-16 shrink-0 overflow-hidden rounded-sm border ${
-                index === active ? "border-gold" : "border-border"
+                index === active ? "border-rose" : "border-border"
               }`}
             >
               <Image src={image.url} alt="" fill className="object-cover" unoptimized />

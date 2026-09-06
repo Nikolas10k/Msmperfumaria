@@ -54,7 +54,7 @@ export default async function AdminDashboardPage() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
           <p className="text-xs uppercase tracking-wide text-text-muted">Faturamento</p>
-          <p className="mt-2 text-2xl text-gold-light">{formatBRL(revenue)}</p>
+          <p className="mt-2 text-2xl text-rose-light">{formatBRL(revenue)}</p>
         </Card>
         <Card>
           <p className="text-xs uppercase tracking-wide text-text-muted">Pedidos pagos</p>
@@ -80,7 +80,7 @@ export default async function AdminDashboardPage() {
               <Link
                 key={order.id}
                 href={`/admin/pedidos/${order.id}`}
-                className="flex items-center justify-between rounded-sm border border-border px-3 py-2 hover:border-gold"
+                className="flex items-center justify-between rounded-sm border border-border px-3 py-2 hover:border-rose"
               >
                 <div>
                   <p className="text-sm text-text-primary">{order.order_number}</p>

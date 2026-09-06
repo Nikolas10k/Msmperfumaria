@@ -41,7 +41,7 @@ export default async function MyOrdersPage() {
           <Link
             key={order.id}
             href={`/conta/pedidos/${order.id}`}
-            className="flex items-center justify-between rounded-md border border-border bg-surface p-4 hover:border-gold-hairline"
+            className="flex items-center justify-between rounded-md border border-border bg-surface p-4 hover:border-rose-hairline"
           >
             <div>
               <p className="text-text-primary">{order.order_number}</p>

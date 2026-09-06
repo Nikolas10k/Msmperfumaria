@@ -41,7 +41,7 @@ export function BannerForm({ banner }: { banner?: Banner }) {
           name="image_file"
           type="file"
           accept="image/*"
-          className="text-sm text-text-secondary file:mr-3 file:rounded-sm file:border-0 file:bg-gold file:px-3 file:py-2 file:text-ink"
+          className="text-sm text-text-secondary file:mr-3 file:rounded-sm file:border-0 file:bg-rose file:px-3 file:py-2 file:text-ink"
         />
       </div>
 

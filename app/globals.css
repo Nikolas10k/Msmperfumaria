@@ -8,9 +8,9 @@
   --color-ink: #0a0a0a;
   --color-paper: #faf8f4;
   --color-paper-muted: #f1ede4;
-  --color-gold: #c8a24d;
-  --color-gold-light: #e4c878;
-  --color-gold-dark: #9c7c33;
+  --color-rose: #d6336c;
+  --color-rose-light: #ff6b93;
+  --color-rose-dark: #8c1c4d;
   --color-text-primary: #f5f3ee;
   --color-text-secondary: #c9c5ba;
   --color-text-muted: #8f8b80;
@@ -26,9 +26,9 @@
   --color-ink: var(--color-ink);
   --color-paper: var(--color-paper);
   --color-paper-muted: var(--color-paper-muted);
-  --color-gold: var(--color-gold);
-  --color-gold-light: var(--color-gold-light);
-  --color-gold-dark: var(--color-gold-dark);
+  --color-rose: var(--color-rose);
+  --color-rose-light: var(--color-rose-light);
+  --color-rose-dark: var(--color-rose-dark);
   --color-text-primary: var(--color-text-primary);
   --color-text-secondary: var(--color-text-secondary);
   --color-text-muted: var(--color-text-muted);
@@ -47,18 +47,18 @@ body {
   font-family: var(--font-serif), serif;
 }
 
-.text-gradient-gold {
-  background-image: linear-gradient(120deg, var(--color-gold-dark), var(--color-gold-light));
+.text-gradient-rose {
+  background-image: linear-gradient(120deg, var(--color-rose-dark), var(--color-rose-light));
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
 }
 
-.border-gold-hairline {
-  border-color: color-mix(in srgb, var(--color-gold) 35%, transparent);
+.border-rose-hairline {
+  border-color: color-mix(in srgb, var(--color-rose) 35%, transparent);
 }
 
 ::selection {
-  background: var(--color-gold);
+  background: var(--color-rose);
   color: var(--color-ink);
 }

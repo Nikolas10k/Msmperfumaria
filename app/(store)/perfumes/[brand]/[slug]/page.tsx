@@ -109,7 +109,7 @@ export default async function ProductPage({
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <nav className="mb-6 text-xs text-text-muted">
-        <Link href="/perfumes" className="hover:text-gold">Perfumes</Link> / {product.brandName} / {product.name}
+        <Link href="/perfumes" className="hover:text-rose">Perfumes</Link> / {product.brandName} / {product.name}
       </nav>
 
       <div className="grid gap-10 lg:grid-cols-2">
@@ -140,15 +140,15 @@ export default async function ProductPage({
 
           <div className="mt-6 grid grid-cols-3 gap-3 border-y border-border py-4 text-center text-xs text-text-muted">
             <div className="flex flex-col items-center gap-1">
-              <ShieldCheck size={18} className="text-gold" />
+              <ShieldCheck size={18} className="text-rose" />
               Compra segura
             </div>
             <div className="flex flex-col items-center gap-1">
-              <PackageCheck size={18} className="text-gold" />
+              <PackageCheck size={18} className="text-rose" />
               Nota fiscal
             </div>
             <div className="flex flex-col items-center gap-1">
-              <Truck size={18} className="text-gold" />
+              <Truck size={18} className="text-rose" />
               Envio Brasil
             </div>
           </div>
@@ -158,7 +158,7 @@ export default async function ProductPage({
               href={whatsappHref}
               target="_blank"
               rel="noreferrer"
-              className="mt-4 flex items-center justify-center gap-2 rounded-sm border border-gold-hairline py-3 text-sm text-gold hover:bg-gold/10"
+              className="mt-4 flex items-center justify-center gap-2 rounded-sm border border-rose-hairline py-3 text-sm text-rose hover:bg-rose/10"
             >
               <MessageCircle size={16} /> Fale com um especialista
             </a>

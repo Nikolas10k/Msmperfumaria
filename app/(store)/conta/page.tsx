@@ -25,19 +25,19 @@ export default async function AccountPage() {
 
       <div className="grid gap-4 sm:grid-cols-3">
         <Link href="/conta/pedidos">
-          <Card className="h-full hover:border-gold-hairline">
+          <Card className="h-full hover:border-rose-hairline">
             <p className="text-text-primary">Meus pedidos</p>
             <p className="mt-1 text-xs text-text-muted">Acompanhe status e histórico</p>
           </Card>
         </Link>
         <Link href="/conta/enderecos">
-          <Card className="h-full hover:border-gold-hairline">
+          <Card className="h-full hover:border-rose-hairline">
             <p className="text-text-primary">Endereços</p>
             <p className="mt-1 text-xs text-text-muted">Gerencie seus endereços de entrega</p>
           </Card>
         </Link>
         <Link href="/conta/favoritos">
-          <Card className="h-full hover:border-gold-hairline">
+          <Card className="h-full hover:border-rose-hairline">
             <p className="text-text-primary">Favoritos</p>
             <p className="mt-1 text-xs text-text-muted">Perfumes que você salvou</p>
           </Card>

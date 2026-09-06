@@ -32,7 +32,7 @@ export function LoginForm({ proximo }: { proximo?: string }) {
       <div>
         <div className="flex items-center justify-between">
           <Label htmlFor="password">Senha</Label>
-          <Link href="/esqueci-senha" className="text-xs text-text-muted hover:text-gold">
+          <Link href="/esqueci-senha" className="text-xs text-text-muted hover:text-rose">
             Esqueci minha senha
           </Link>
         </div>

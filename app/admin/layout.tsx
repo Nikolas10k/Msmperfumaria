@@ -26,7 +26,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
     <div className="flex min-h-screen bg-bg">
       <aside className="hidden w-64 shrink-0 border-r border-border bg-surface md:block">
         <div className="border-b border-border px-6 py-5">
-          <Link href="/admin" className="font-serif-display text-lg text-gradient-gold">
+          <Link href="/admin" className="font-serif-display text-lg text-gradient-rose">
             MSM Perfumaria
           </Link>
           <p className="mt-0.5 text-xs text-text-muted">Painel administrativo</p>
@@ -36,7 +36,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
             <Link
               key={item.href}
               href={item.href}
-              className="rounded-sm px-3 py-2 text-sm text-text-secondary hover:bg-surface-2 hover:text-gold"
+              className="rounded-sm px-3 py-2 text-sm text-text-secondary hover:bg-surface-2 hover:text-rose"
             >
               {item.label}
             </Link>
@@ -51,7 +51,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
             <span className="text-text-muted">({staff.role})</span>
           </p>
           <div className="flex items-center gap-3">
-            <Link href="/" className="text-xs text-text-muted hover:text-gold" target="_blank">
+            <Link href="/" className="text-xs text-text-muted hover:text-rose" target="_blank">
               Ver loja ↗
             </Link>
             <form action={logOutAction}>

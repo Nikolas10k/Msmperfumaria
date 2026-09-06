@@ -31,7 +31,7 @@ export function ImageManager({ productId, images }: { productId: string; images:
               {!image.is_primary && (
                 <button
                   type="button"
-                  className="text-text-secondary hover:text-gold"
+                  className="text-text-secondary hover:text-rose"
                   disabled={pending}
                   onClick={() => startTransition(() => setPrimaryImageAction(image.id, productId))}
                 >
@@ -62,7 +62,7 @@ export function ImageManager({ productId, images }: { productId: string; images:
           name="files"
           accept="image/*"
           multiple
-          className="text-sm text-text-secondary file:mr-3 file:rounded-sm file:border-0 file:bg-gold file:px-3 file:py-2 file:text-ink"
+          className="text-sm text-text-secondary file:mr-3 file:rounded-sm file:border-0 file:bg-rose file:px-3 file:py-2 file:text-ink"
         />
         <Button type="submit" size="sm" disabled={pending}>
           {pending ? "Enviando…" : "Enviar imagens"}

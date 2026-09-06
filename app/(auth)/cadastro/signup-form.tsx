@@ -56,11 +56,11 @@ export function SignupForm() {
         <input type="checkbox" name="consent" className="mt-0.5" required />
         <span>
           Li e aceito os{" "}
-          <Link href="/termos" className="text-gold hover:text-gold-light">
+          <Link href="/termos" className="text-rose hover:text-rose-light">
             Termos de Uso
           </Link>{" "}
           e a{" "}
-          <Link href="/privacidade" className="text-gold hover:text-gold-light">
+          <Link href="/privacidade" className="text-rose hover:text-rose-light">
             Política de Privacidade
           </Link>
           .

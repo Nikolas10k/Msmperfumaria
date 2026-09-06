@@ -57,7 +57,7 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
             <Link
               key={order.id}
               href={`/admin/pedidos/${order.id}`}
-              className="flex items-center justify-between rounded-sm border border-border px-3 py-2 hover:border-gold"
+              className="flex items-center justify-between rounded-sm border border-border px-3 py-2 hover:border-rose"
             >
               <span className="text-sm text-text-primary">{order.order_number}</span>
               <span className="text-sm text-text-secondary">{formatBRL(Number(order.total))}</span>

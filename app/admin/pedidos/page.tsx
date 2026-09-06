@@ -43,7 +43,7 @@ export default async function OrdersPage({
       <div className="flex flex-wrap gap-2">
         <Link
           href="/admin/pedidos"
-          className={`rounded-full border px-3 py-1 text-xs ${!status ? "border-gold text-gold" : "border-border text-text-muted"}`}
+          className={`rounded-full border px-3 py-1 text-xs ${!status ? "border-rose text-rose" : "border-border text-text-muted"}`}
         >
           Todos
         </Link>
@@ -51,7 +51,7 @@ export default async function OrdersPage({
           <Link
             key={value}
             href={`/admin/pedidos?status=${value}`}
-            className={`rounded-full border px-3 py-1 text-xs ${status === value ? "border-gold text-gold" : "border-border text-text-muted"}`}
+            className={`rounded-full border px-3 py-1 text-xs ${status === value ? "border-rose text-rose" : "border-border text-text-muted"}`}
           >
             {label}
           </Link>
@@ -73,7 +73,7 @@ export default async function OrdersPage({
             {(orders ?? []).map((order) => (
               <tr key={order.id} className="border-t border-border">
                 <td className="px-4 py-3">
-                  <Link href={`/admin/pedidos/${order.id}`} className="text-gold hover:text-gold-light">
+                  <Link href={`/admin/pedidos/${order.id}`} className="text-rose hover:text-rose-light">
                     {order.order_number}
                   </Link>
                 </td>

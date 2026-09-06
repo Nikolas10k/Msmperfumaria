@@ -8,7 +8,7 @@ export function ProductCard({ product }: { product: CatalogProduct }) {
   return (
     <Link
       href={`/perfumes/${product.brandSlug}/${product.slug}`}
-      className="group block overflow-hidden rounded-md border border-border bg-surface transition-colors hover:border-gold-hairline"
+      className="group block overflow-hidden rounded-md border border-border bg-surface transition-colors hover:border-rose-hairline"
     >
       <div className="relative aspect-square overflow-hidden bg-surface-2">
         {product.imageUrl ? (
@@ -43,7 +43,7 @@ export function ProductCard({ product }: { product: CatalogProduct }) {
           {product.hasDiscount && (
             <span className="text-xs text-text-muted line-through">{formatBRL(product.minOriginalPrice)}</span>
           )}
-          <span className="text-base text-gold-light">{formatBRL(product.minPrice)}</span>
+          <span className="text-base text-rose-light">{formatBRL(product.minPrice)}</span>
         </div>
       </div>
     </Link>

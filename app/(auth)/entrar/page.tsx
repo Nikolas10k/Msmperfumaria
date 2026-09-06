@@ -25,7 +25,7 @@ export default async function LoginPage({
       <LoginForm proximo={proximo} />
       <p className="mt-6 text-center text-sm text-text-secondary">
         Ainda não tem conta?{" "}
-        <Link href="/cadastro" className="text-gold hover:text-gold-light">
+        <Link href="/cadastro" className="text-rose hover:text-rose-light">
           Criar conta
         </Link>
       </p>

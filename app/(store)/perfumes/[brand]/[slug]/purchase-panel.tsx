@@ -42,7 +42,7 @@ export function PurchasePanel({ variants }: { variants: ProductVariantDetail[] }
           {variant.price.hasDiscount && (
             <span className="text-sm text-text-muted line-through">{formatBRL(variant.price.originalPrice)}</span>
           )}
-          <span className="text-3xl text-gold-light">{formatBRL(variant.price.finalPrice)}</span>
+          <span className="text-3xl text-rose-light">{formatBRL(variant.price.finalPrice)}</span>
         </div>
         {variant.installmentsMax > 1 && (
           <p className="mt-1 text-xs text-text-muted">

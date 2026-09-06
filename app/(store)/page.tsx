@@ -43,11 +43,11 @@ export default async function HomePage() {
         )}
 
         <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
-          <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-gold-hairline bg-ink/60 px-4 py-1.5 text-xs uppercase tracking-widest text-gold-light">
+          <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-rose-hairline bg-ink/60 px-4 py-1.5 text-xs uppercase tracking-widest text-rose-light">
             ⚡ Entrega expressa em Brasília
           </span>
           <h1 className="font-serif-display text-4xl text-text-primary sm:text-6xl">
-            Seu perfume. <span className="text-gradient-gold">Sua assinatura.</span>
+            Seu perfume. <span className="text-gradient-rose">Sua assinatura.</span>
           </h1>
           <p className="mt-4 max-w-xl text-sm text-text-secondary sm:text-base">
             Perfumes importados originais para quem escolhe deixar uma marca.
@@ -90,7 +90,7 @@ export default async function HomePage() {
                     />
                   )}
                 </div>
-                <p className="p-3 text-center text-xs uppercase tracking-wide text-text-secondary group-hover:text-gold">
+                <p className="p-3 text-center text-xs uppercase tracking-wide text-text-secondary group-hover:text-rose">
                   {category.name}
                 </p>
               </Link>
@@ -103,7 +103,7 @@ export default async function HomePage() {
         <section className="mx-auto max-w-7xl px-4 py-12">
           <div className="mb-6 flex items-center justify-between">
             <h2 className="font-serif-display text-2xl text-text-primary">Os mais desejados</h2>
-            <Link href="/perfumes" className="text-sm text-gold hover:text-gold-light">
+            <Link href="/perfumes" className="text-sm text-rose hover:text-rose-light">
               Ver todos →
             </Link>
           </div>
@@ -124,7 +124,7 @@ export default async function HomePage() {
             { icon: Truck, label: "Envio para todo o Brasil" },
           ].map(({ icon: Icon, label }) => (
             <div key={label} className="flex flex-col items-center text-center">
-              <Icon className="mb-2 text-gold" size={28} />
+              <Icon className="mb-2 text-rose" size={28} />
               <p className="text-xs text-text-secondary">{label}</p>
             </div>
           ))}

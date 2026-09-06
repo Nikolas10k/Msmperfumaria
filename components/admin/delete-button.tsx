@@ -29,7 +29,7 @@ export function DeleteButton({
       className={
         tone === "danger"
           ? "text-danger hover:opacity-80 disabled:opacity-50"
-          : "text-text-secondary hover:text-gold disabled:opacity-50"
+          : "text-text-secondary hover:text-rose disabled:opacity-50"
       }
     >
       {pending ? "Aguarde…" : label}

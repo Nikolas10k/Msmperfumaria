@@ -87,7 +87,7 @@ export default function CartPage() {
                   <p className="text-xs uppercase tracking-wide text-text-muted">{item.brandName}</p>
                   <Link
                     href={`/perfumes/${item.brandSlug}/${item.productSlug}`}
-                    className="text-sm text-text-primary hover:text-gold"
+                    className="text-sm text-text-primary hover:text-rose"
                   >
                     {item.productName} — {item.volumeMl}ml
                   </Link>

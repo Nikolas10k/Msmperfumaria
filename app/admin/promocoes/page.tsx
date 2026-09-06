@@ -73,7 +73,7 @@ export default async function PromotionsPage() {
                   </td>
                   <td className="px-4 py-3 text-right">
                     <div className="flex justify-end gap-3">
-                      <Link href={`/admin/promocoes/${promo.id}`} className="text-gold hover:text-gold-light">
+                      <Link href={`/admin/promocoes/${promo.id}`} className="text-rose hover:text-rose-light">
                         Editar
                       </Link>
                       <DeleteButton id={promo.id} action={deletePromotionAction} />

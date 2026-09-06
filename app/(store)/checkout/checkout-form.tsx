@@ -206,7 +206,7 @@ export function CheckoutForm({ addresses, initialCoupon }: { addresses: Address[
           </label>
           <label
             className={`flex items-center justify-between rounded-sm border p-3 text-sm ${
-              expressCheck?.available ? "border-gold-hairline" : "border-border opacity-50"
+              expressCheck?.available ? "border-rose-hairline" : "border-border opacity-50"
             }`}
           >
             <span className="flex items-center gap-2">

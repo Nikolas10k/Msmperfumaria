@@ -20,7 +20,7 @@ export async function StoreHeader() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-bg/95 backdrop-blur">
-      <div className="bg-ink px-4 py-2 text-center text-[11px] uppercase tracking-wider text-gold-light">
+      <div className="bg-ink px-4 py-2 text-center text-[11px] uppercase tracking-wider text-rose-light">
         🚚 Entrega expressa em Brasília · Envios para todo o Brasil
       </div>
 
@@ -29,7 +29,7 @@ export async function StoreHeader() {
           <Menu size={22} />
         </button>
 
-        <Link href="/" className="font-serif-display text-xl tracking-wide text-gradient-gold">
+        <Link href="/" className="font-serif-display text-xl tracking-wide text-gradient-rose">
           MSM PERFUMARIA
         </Link>
 
@@ -38,7 +38,7 @@ export async function StoreHeader() {
             <Link
               key={link.label}
               href={link.href}
-              className="text-xs uppercase tracking-wide text-text-secondary hover:text-gold"
+              className="text-xs uppercase tracking-wide text-text-secondary hover:text-rose"
             >
               {link.label}
             </Link>
@@ -46,13 +46,13 @@ export async function StoreHeader() {
         </nav>
 
         <div className="flex items-center gap-4 text-text-primary">
-          <Link href="/busca" aria-label="Buscar" className="hover:text-gold">
+          <Link href="/busca" aria-label="Buscar" className="hover:text-rose">
             <Search size={20} />
           </Link>
-          <Link href={user ? "/conta/favoritos" : "/entrar"} aria-label="Favoritos" className="hover:text-gold">
+          <Link href={user ? "/conta/favoritos" : "/entrar"} aria-label="Favoritos" className="hover:text-rose">
             <Heart size={20} />
           </Link>
-          <Link href={user ? "/conta" : "/entrar"} aria-label="Minha conta" className="hover:text-gold">
+          <Link href={user ? "/conta" : "/entrar"} aria-label="Minha conta" className="hover:text-rose">
             <User size={20} />
           </Link>
           <CartLink />

@@ -42,7 +42,7 @@ export default async function CustomersPage() {
               return (
                 <tr key={customer.id} className="border-t border-border">
                   <td className="px-4 py-3">
-                    <Link href={`/admin/clientes/${customer.id}`} className="text-text-primary hover:text-gold">
+                    <Link href={`/admin/clientes/${customer.id}`} className="text-text-primary hover:text-rose">
                       {customer.name}
                     </Link>
                   </td>

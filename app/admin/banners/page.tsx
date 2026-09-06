@@ -43,7 +43,7 @@ export default async function BannersPage() {
                 <p className="text-sm text-text-primary">{banner.title}</p>
                 <p className="text-xs text-text-muted capitalize">{banner.placement.replace("_", " ")}</p>
                 <div className="flex justify-between text-sm">
-                  <Link href={`/admin/banners/${banner.id}`} className="text-gold hover:text-gold-light">
+                  <Link href={`/admin/banners/${banner.id}`} className="text-rose hover:text-rose-light">
                     Editar
                   </Link>
                   <DeleteButton id={banner.id} action={deleteBannerAction} />
