@@ -10,6 +10,8 @@ import { ExpressDeliveryCheck } from "@/components/store/express-delivery-check"
 import { Badge } from "@/components/ui/badge";
 import { Gallery } from "./gallery";
 import { PurchasePanel } from "./purchase-panel";
+import { FavoriteButton } from "@/components/store/favorite-button";
+import { isFavoritedAction } from "@/lib/favorites/actions";
 import { getSiteUrl } from "@/lib/env";
 import { onlyDigits } from "@/lib/utils";
 
@@ -62,9 +64,11 @@ export default async function ProductPage({
 
   if (!product) notFound();
 
-  const [related, { data: settings }] = await Promise.all([
+  const [related, { data: settings }, { data: { user } }, favorited] = await Promise.all([
     getCatalogProducts(supabase, { fragranceFamily: product.fragranceFamily }),
     supabase.from("store_settings").select("whatsapp_number").eq("id", true).maybeSingle(),
+    supabase.auth.getUser(),
+    isFavoritedAction(product.id),
   ]);
 
   const relatedProducts = related.filter((p) => p.id !== product.id).slice(0, 4);
@@ -128,6 +132,10 @@ export default async function ProductPage({
 
           <div className="mt-6">
             <PurchasePanel variants={product.variants} />
+          </div>
+
+          <div className="mt-4">
+            <FavoriteButton productId={product.id} initialFavorited={favorited} isAuthenticated={!!user} />
           </div>
 
           <div className="mt-6 grid grid-cols-3 gap-3 border-y border-border py-4 text-center text-xs text-text-muted">

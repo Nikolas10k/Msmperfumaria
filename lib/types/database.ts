@@ -532,6 +532,10 @@ export interface Database {
     Views: Record<string, never>;
     Functions: {
       is_admin: { Args: Record<string, never>; Returns: boolean };
+      decrement_inventory: {
+        Args: { p_variant_id: string; p_quantity: number };
+        Returns: undefined;
+      };
     };
     Enums: {
       user_role: UserRole;

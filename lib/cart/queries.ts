@@ -13,6 +13,7 @@ export interface CartDetailLine {
   productName: string;
   brandName: string;
   volumeMl: number;
+  sku: string;
   imageUrl: string | null;
   unitPrice: number;
   originalPrice: number;
@@ -36,7 +37,7 @@ export async function getCartDetails(
     supabase
       .from("product_variants")
       .select(
-        "id, volume_ml, price, compare_at_price, is_active, inventory(quantity), products(id, name, slug, brand_id, brands(name, slug), product_categories(category_id), product_images(url, is_primary))",
+        "id, sku, volume_ml, price, compare_at_price, is_active, inventory(quantity), products(id, name, slug, brand_id, brands(name, slug), product_categories(category_id), product_images(url, is_primary))",
       )
       .in("id", variantIds),
     getActiveCampaigns(supabase),
@@ -81,6 +82,7 @@ export async function getCartDetails(
     result.push({
       variantId: variant.id,
       quantity: line.quantity,
+      sku: variant.sku,
       productSlug: product.slug,
       brandSlug: product.brands?.slug ?? "",
       productName: product.name,
