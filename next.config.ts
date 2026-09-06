@@ -13,11 +13,15 @@ const supabaseOrigin = (() => {
 
 const csp = [
   "default-src 'self'",
-  `script-src 'self'${isDev ? " 'unsafe-eval' 'unsafe-inline'" : ""}`,
+  // 'unsafe-inline' é necessário mesmo em produção: o App Router injeta o
+  // payload de streaming de Server Components em <script> inline para
+  // hidratar a página — sem isso, a hidratação falha silenciosamente e
+  // nenhum componente client fica interativo (botões, formulários, upload).
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https: blob:",
   `connect-src 'self' ${supabaseOrigin} https://api.mercadopago.com`,
-  "font-src 'self'",
+  "font-src 'self' https://fonts.gstatic.com",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",
