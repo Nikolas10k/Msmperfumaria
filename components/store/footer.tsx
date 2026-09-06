@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import { onlyDigits } from "@/lib/utils";
 
@@ -14,7 +15,10 @@ export async function StoreFooter() {
     <footer className="border-t border-border bg-surface">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <p className="mb-3 font-serif-display text-lg text-gradient-rose">MSM PERFUMARIA</p>
+          <div className="mb-3 flex items-center gap-2">
+            <Image src="/logo.jpg" alt="MSM Perfumaria" width={28} height={28} className="rounded-full" />
+            <p className="font-serif-display text-lg text-gradient-rose">MSM PERFUMARIA</p>
+          </div>
           <p className="text-sm text-text-muted">
             {settings?.footer_about ??
               "Perfumes importados originais para todo o Brasil, com entrega expressa em Brasília."}

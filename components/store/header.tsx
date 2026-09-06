@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Search, User, Heart, Menu } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { CartLink } from "./cart-link";
@@ -29,8 +30,11 @@ export async function StoreHeader() {
           <Menu size={22} />
         </button>
 
-        <Link href="/" className="font-serif-display text-xl tracking-wide text-gradient-rose">
-          MSM PERFUMARIA
+        <Link href="/" className="flex items-center gap-2">
+          <Image src="/logo.jpg" alt="MSM Perfumaria" width={36} height={36} className="rounded-full" />
+          <span className="hidden font-serif-display text-xl tracking-wide text-gradient-rose sm:inline">
+            MSM PERFUMARIA
+          </span>
         </Link>
 
         <nav className="hidden items-center gap-6 md:flex">
