@@ -110,14 +110,25 @@ export async function duplicateProductAction(id: string) {
   const { data: product } = await supabase.from("products").select("*").eq("id", id).maybeSingle();
   if (!product) return;
 
-  const { id: _oldId, created_at: _c, updated_at: _u, ...rest } = product;
   const { data: copy, error } = await supabase
     .from("products")
     .insert({
-      ...rest,
+      brand_id: product.brand_id,
       name: `${product.name} (cópia)`,
       slug: slugify(`${product.name}-copia-${Date.now()}`),
+      gender: product.gender,
+      fragrance_type: product.fragrance_type,
+      fragrance_family: product.fragrance_family,
+      top_notes: product.top_notes,
+      heart_notes: product.heart_notes,
+      base_notes: product.base_notes,
+      description: product.description,
       is_active: false,
+      is_original: product.is_original,
+      is_bestseller: product.is_bestseller,
+      is_new_arrival: product.is_new_arrival,
+      meta_title: product.meta_title,
+      meta_description: product.meta_description,
     })
     .select("id")
     .single();
@@ -129,10 +140,17 @@ export async function duplicateProductAction(id: string) {
       .eq("product_id", id);
 
     for (const variant of variants ?? []) {
-      const { id: _vid, product_id: _pid, created_at: _vc, updated_at: _vu, ...variantRest } = variant;
-      await supabase
-        .from("product_variants")
-        .insert({ ...variantRest, product_id: copy.id, sku: `${variant.sku}-COPY` });
+      await supabase.from("product_variants").insert({
+        product_id: copy.id,
+        sku: `${variant.sku}-COPY`,
+        volume_ml: variant.volume_ml,
+        price: variant.price,
+        compare_at_price: variant.compare_at_price,
+        installments_max: variant.installments_max,
+        barcode: variant.barcode,
+        position: variant.position,
+        is_active: variant.is_active,
+      });
     }
   }
 

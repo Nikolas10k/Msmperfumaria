@@ -33,6 +33,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
+    // Sincroniza com localStorage (sistema externo) uma vez, após a
+    // hidratação — não pode ler no render por divergir entre servidor/cliente.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setItems(readStorage());
     setHydrated(true);
   }, []);

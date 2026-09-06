@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { requireStaff } from "@/lib/admin/guard";
 import { Badge } from "@/components/ui/badge";
 import { formatBRL } from "@/lib/utils";
+import type { OrderStatus } from "@/lib/types/database";
 
 export const metadata: Metadata = { title: "Pedidos" };
 export const dynamic = "force-dynamic";
@@ -31,7 +32,7 @@ export default async function OrdersPage({
     .select("id, order_number, status, total, created_at, customers(name, email)")
     .order("created_at", { ascending: false });
 
-  if (status) query = query.eq("status", status);
+  if (status) query = query.eq("status", status as OrderStatus);
 
   const { data: orders } = await query;
 

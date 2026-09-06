@@ -31,6 +31,8 @@ export default function CartPage() {
   const [pending, startTransition] = useTransition();
 
   useEffect(() => {
+    // Busca preços/estoque atuais no servidor sempre que o carrinho local muda.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     getCartDetailsAction(items)
       .then(setDetails)

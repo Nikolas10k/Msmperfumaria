@@ -41,7 +41,7 @@ export default async function CouponsPage() {
           </thead>
           <tbody>
             {(coupons ?? []).map((coupon) => {
-              const uses = (coupon.coupon_usages as unknown[])?.length ?? 0;
+              const uses = (coupon.coupon_usages as unknown as unknown[])?.length ?? 0;
               const starts = new Date(coupon.starts_at);
               const ends = new Date(coupon.ends_at);
               const isLive = coupon.is_active && starts <= now && now <= ends;

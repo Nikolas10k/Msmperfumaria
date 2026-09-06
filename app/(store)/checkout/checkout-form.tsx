@@ -58,6 +58,8 @@ export function CheckoutForm({ addresses, initialCoupon }: { addresses: Address[
   useEffect(() => {
     const digits = onlyDigits(currentCep);
     if (digits.length !== 8) {
+      // Reseta a checagem expressa ao trocar de CEP/endereço.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setExpressCheck(null);
       return;
     }

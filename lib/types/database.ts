@@ -27,10 +27,13 @@ export type PaymentStatus = "pending" | "approved" | "rejected" | "refunded";
 export type ShippingMethodType = "standard" | "express_brasilia";
 export type NotificationRecipient = "admin" | "customer";
 
+// `Relationships` é exigido pelo tipo `GenericTable` do postgrest-js — sem ele
+// a checagem estrutural falha silenciosamente e todo o schema vira `never`.
 type TableDef<Row, Insert, Update = Partial<Insert>> = {
   Row: Row;
   Insert: Insert;
   Update: Update;
+  Relationships: never[];
 };
 
 export interface Database {
@@ -75,8 +78,19 @@ export interface Database {
           is_default: boolean;
           created_at: string;
         },
-        Omit<Database["public"]["Tables"]["addresses"]["Row"], "id" | "created_at"> & {
+        {
           id?: string;
+          customer_id: string;
+          label: string;
+          recipient_name: string;
+          cep: string;
+          street: string;
+          number: string;
+          complement?: string | null;
+          neighborhood: string;
+          city: string;
+          state: string;
+          is_default?: boolean;
         }
       >;
       brands: TableDef<
@@ -526,7 +540,16 @@ export interface Database {
           business_hours: string | null;
           updated_at: string;
         },
-        Partial<Database["public"]["Tables"]["store_settings"]["Row"]>
+        {
+          whatsapp_number?: string | null;
+          support_email?: string | null;
+          instagram_url?: string | null;
+          facebook_url?: string | null;
+          tiktok_url?: string | null;
+          footer_about?: string | null;
+          footer_cnpj?: string | null;
+          business_hours?: string | null;
+        }
       >;
     };
     Views: Record<string, never>;
