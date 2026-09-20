@@ -88,9 +88,15 @@ export async function forgotPasswordAction(
     return { ok: false, fieldErrors: fieldErrorsFromZod(parsed.error) };
   }
 
+  // O template de e-mail padrão do Supabase (sem SMTP customizado configurado,
+  // não dá pra editar) usa o endpoint hospedado deles pra verificar o token e
+  // só then redireciona o navegador pra cá — com a sessão anexada no #hash da
+  // URL, não como query param. Por isso não passamos por /auth/confirm aqui:
+  // aquela rota só recebe o hash em query string (?token_hash=...), que o
+  // fluxo padrão não envia. A página /redefinir-senha lê o hash no cliente.
   const supabase = await createClient();
   await supabase.auth.resetPasswordForEmail(parsed.data.email, {
-    redirectTo: `${getSiteUrl()}/auth/confirm?type=recovery`,
+    redirectTo: `${getSiteUrl()}/redefinir-senha`,
   });
 
   return { ok: true, message: "Se o e-mail existir, enviaremos um link de redefinição." };
