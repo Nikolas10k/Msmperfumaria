@@ -39,7 +39,24 @@ export default async function HomePage() {
             <Image src={heroBanner.image_url} alt={heroBanner.title} fill priority className="object-cover opacity-40" unoptimized />
           </div>
         ) : (
-          <CinematicHeroBackground />
+          <>
+            <CinematicHeroBackground />
+            {/* video/tag nativo — sem JS, sem hidratação, sem risco de crash como
+                a cena WebGL anterior. Some sozinho se prefers-reduced-motion. */}
+            <video
+              className="hero-video absolute inset-0 h-full w-full object-cover"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              poster="/videos/hero-poster.jpg"
+              aria-hidden="true"
+            >
+              <source src="/videos/hero-perfume.mp4" type="video/mp4" />
+            </video>
+            <div className="pointer-events-none absolute inset-0 bg-bg/55" />
+          </>
         )}
 
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bg via-bg/10 to-bg/50" />

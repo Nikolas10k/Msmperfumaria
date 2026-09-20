@@ -185,4 +185,9 @@ body {
   .cinematic-glow-3 {
     animation: none;
   }
+
+  /* Some e deixa só o fundo em CSS (glow) por trás visível. */
+  .hero-video {
+    display: none;
+  }
 }
