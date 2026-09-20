@@ -62,3 +62,41 @@ body {
   background: var(--color-rose);
   color: var(--color-ink);
 }
+
+/* Splash/loading da marca — todas as curvas são senoidais (ease-in-out em
+   ida e volta ao mesmo estado), por isso o loop nunca tem um corte visível. */
+@keyframes perfume-loader-rotate {
+  0%, 100% { transform: perspective(600px) rotateY(-14deg); }
+  50% { transform: perspective(600px) rotateY(14deg); }
+}
+
+@keyframes perfume-loader-glow-pulse {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.12); }
+}
+
+@keyframes perfume-loader-label-fade {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
+
+.perfume-loader-bottle {
+  animation: perfume-loader-rotate 6s ease-in-out infinite;
+  filter: drop-shadow(0 0 18px color-mix(in srgb, var(--color-rose) 55%, transparent));
+}
+
+.perfume-loader-glow {
+  animation: perfume-loader-glow-pulse 3.5s ease-in-out infinite;
+}
+
+.perfume-loader-label {
+  animation: perfume-loader-label-fade 3.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .perfume-loader-bottle,
+  .perfume-loader-glow,
+  .perfume-loader-label {
+    animation: none;
+  }
+}
