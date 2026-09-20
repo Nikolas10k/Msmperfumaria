@@ -62,8 +62,8 @@ export default async function HomePage() {
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bg via-bg/10 to-bg/50" />
 
         <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
-          <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-rose-hairline bg-ink/50 px-4 py-1.5 text-[10px] uppercase tracking-[0.3em] text-rose-light backdrop-blur">
-            ⚡ Entrega expressa em Brasília
+          <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-rose-hairline bg-ink/50 px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.3em] text-rose-light backdrop-blur">
+            Entrega expressa em Brasília
           </span>
           <h1 className="max-w-4xl text-5xl font-bold uppercase leading-[0.95] tracking-tight text-text-primary sm:text-7xl lg:text-8xl">
             Seu perfume.
