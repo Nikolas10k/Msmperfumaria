@@ -20,7 +20,10 @@ const csp = [
   `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https: blob:",
-  `connect-src 'self' ${supabaseOrigin} https://api.mercadopago.com`,
+  // blob: é necessário aqui (não só em img-src): o GLTFLoader do Three.js
+  // extrai as texturas do .glb e as busca via fetch() em URLs blob: — sem
+  // isso no connect-src, o navegador bloqueia esse fetch e a textura falha.
+  `connect-src 'self' ${supabaseOrigin} https://api.mercadopago.com blob:`,
   "font-src 'self' https://fonts.gstatic.com",
   // O decoder Meshopt (compressão do modelo 3D) roda num Web Worker
   // instanciado a partir de um blob gerado pelo próprio bundle do app.
