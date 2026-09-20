@@ -68,6 +68,19 @@ export async function StoreFooter() {
       <div className="border-t border-border px-4 py-6 text-center text-xs text-text-muted">
         © {new Date().getFullYear()} MSM Perfumaria. Todos os direitos reservados.
         {settings?.footer_cnpj && ` · CNPJ ${settings.footer_cnpj}`}
+        <br />
+        <span className="text-[10px] opacity-60">
+          Modelo 3D &quot;Jean Paul Gaultier Le Male Elixir&quot; por{" "}
+          <a
+            href="https://sketchfab.com/oddphi5h"
+            target="_blank"
+            rel="noreferrer"
+            className="underline hover:text-rose"
+          >
+            oddphi5h
+          </a>{" "}
+          (CC BY 4.0)
+        </span>
       </div>
     </footer>
   );

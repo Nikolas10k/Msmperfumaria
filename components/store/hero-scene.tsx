@@ -2,42 +2,33 @@
 
 import { Suspense, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, MeshTransmissionMaterial, Sparkles, Environment } from "@react-three/drei";
-import type { Mesh } from "three";
+import { Float, Sparkles, Environment, useGLTF, Center } from "@react-three/drei";
+import type { Group } from "three";
 
-function GlassOrb() {
-  const meshRef = useRef<Mesh>(null);
+const BOTTLE_MODEL_URL = "/models/bottle.glb";
+
+function Bottle() {
+  const groupRef = useRef<Group>(null);
+  const { scene } = useGLTF(BOTTLE_MODEL_URL);
 
   useFrame((_, delta) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y += delta * 0.12;
-      meshRef.current.rotation.x += delta * 0.03;
+    if (groupRef.current) {
+      groupRef.current.rotation.y += delta * 0.15;
     }
   });
 
   return (
-    <Float speed={1.4} rotationIntensity={0.25} floatIntensity={0.7}>
-      <mesh ref={meshRef} scale={1.6}>
-        <icosahedronGeometry args={[1, 24]} />
-        <MeshTransmissionMaterial
-          color="#ff9ec1"
-          thickness={1.4}
-          roughness={0.06}
-          transmission={1}
-          ior={1.35}
-          chromaticAberration={0.04}
-          anisotropy={0.4}
-          distortion={0.15}
-          distortionScale={0.3}
-          temporalDistortion={0.1}
-          clearcoat={1}
-          attenuationColor="#d6336c"
-          attenuationDistance={0.6}
-        />
-      </mesh>
+    <Float speed={1.2} rotationIntensity={0.15} floatIntensity={0.5}>
+      <group ref={groupRef}>
+        <Center>
+          <primitive object={scene} scale={2.4} />
+        </Center>
+      </group>
     </Float>
   );
 }
+
+useGLTF.preload(BOTTLE_MODEL_URL);
 
 export function HeroScene() {
   return (
@@ -53,7 +44,7 @@ export function HeroScene() {
 
       <Suspense fallback={null}>
         <Environment preset="studio" />
-        <GlassOrb />
+        <Bottle />
         <Sparkles count={90} scale={7} size={2.2} speed={0.25} color="#ff9ec1" opacity={0.55} />
       </Suspense>
     </Canvas>
