@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getCatalogProducts } from "@/lib/catalog/list-products";
 import { ProductCard } from "@/components/store/product-card";
 import { ExpressDeliveryCheck } from "@/components/store/express-delivery-check";
-import { HeroSceneClient } from "@/components/store/hero-scene-client";
+import { CinematicHeroBackground } from "@/components/store/cinematic-hero-background";
 import { Button } from "@/components/ui/button";
 
 export const revalidate = 60;
@@ -39,9 +39,7 @@ export default async function HomePage() {
             <Image src={heroBanner.image_url} alt={heroBanner.title} fill priority className="object-cover opacity-40" unoptimized />
           </div>
         ) : (
-          <div className="absolute inset-0">
-            <HeroSceneClient />
-          </div>
+          <CinematicHeroBackground />
         )}
 
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bg via-bg/10 to-bg/50" />
