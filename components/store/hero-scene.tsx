@@ -9,7 +9,9 @@ const BOTTLE_MODEL_URL = "/models/bottle.glb";
 
 function Bottle() {
   const groupRef = useRef<Group>(null);
-  const { scene } = useGLTF(BOTTLE_MODEL_URL);
+  // useDraco=false: o modelo usa compressão Meshopt (embutida no app, sem
+  // depender de decoder externo via CDN) — Draco nem é necessário aqui.
+  const { scene } = useGLTF(BOTTLE_MODEL_URL, false);
 
   useFrame((_, delta) => {
     if (groupRef.current) {
@@ -28,7 +30,7 @@ function Bottle() {
   );
 }
 
-useGLTF.preload(BOTTLE_MODEL_URL);
+useGLTF.preload(BOTTLE_MODEL_URL, false);
 
 export function HeroScene() {
   return (

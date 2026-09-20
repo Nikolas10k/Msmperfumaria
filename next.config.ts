@@ -17,15 +17,13 @@ const csp = [
   // payload de streaming de Server Components em <script> inline para
   // hidratar a página — sem isso, a hidratação falha silenciosamente e
   // nenhum componente client fica interativo (botões, formulários, upload).
-  // gstatic: decoder do Draco (compressão de modelos glTF usados na cena 3D).
-  `script-src 'self' 'unsafe-inline' https://www.gstatic.com${isDev ? " 'unsafe-eval'" : ""}`,
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https: blob:",
-  // raw.githack.com: texturas HDRI de iluminação (@react-three/drei Environment).
-  // gstatic: binário .wasm do decoder Draco.
-  `connect-src 'self' ${supabaseOrigin} https://api.mercadopago.com https://raw.githack.com https://www.gstatic.com`,
+  `connect-src 'self' ${supabaseOrigin} https://api.mercadopago.com`,
   "font-src 'self' https://fonts.gstatic.com",
-  // O decoder Draco roda dentro de um Web Worker criado a partir de um blob.
+  // O decoder Meshopt (compressão do modelo 3D) roda num Web Worker
+  // instanciado a partir de um blob gerado pelo próprio bundle do app.
   "worker-src 'self' blob:",
   "frame-ancestors 'none'",
   "base-uri 'self'",
