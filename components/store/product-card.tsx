@@ -8,9 +8,9 @@ export function ProductCard({ product }: { product: CatalogProduct }) {
   return (
     <Link
       href={`/perfumes/${product.brandSlug}/${product.slug}`}
-      className="group block overflow-hidden rounded-md border border-border bg-surface transition-colors hover:border-rose-hairline"
+      className="product-frame-card group block overflow-hidden rounded-lg border border-rose-hairline/25 bg-surface hover:border-rose-hairline"
     >
-      <div className="relative aspect-square overflow-hidden bg-surface-2">
+      <div className="product-frame relative aspect-square overflow-hidden bg-surface-2">
         {product.imageUrl ? (
           <Image
             src={product.imageUrl}
@@ -23,14 +23,14 @@ export function ProductCard({ product }: { product: CatalogProduct }) {
           <div className="flex h-full items-center justify-center text-xs text-text-muted">Sem imagem</div>
         )}
 
-        <div className="absolute left-2 top-2 flex flex-col gap-1">
+        <div className="absolute left-2 top-2 z-10 flex flex-col gap-1">
           {product.isBestseller && <Badge>Mais vendido</Badge>}
           {product.isNewArrival && <Badge variant="dark">Lançamento</Badge>}
           {product.hasDiscount && <Badge variant="danger">-{product.discountPercent}%</Badge>}
         </div>
 
         {!product.inStock && (
-          <div className="absolute inset-x-0 bottom-0 bg-ink/80 py-1.5 text-center text-[11px] uppercase tracking-wide text-text-muted">
+          <div className="absolute inset-x-0 bottom-0 z-10 bg-ink/80 py-1.5 text-center text-[11px] uppercase tracking-wide text-text-muted">
             Esgotado
           </div>
         )}

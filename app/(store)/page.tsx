@@ -33,7 +33,7 @@ export default async function HomePage() {
 
   return (
     <div>
-      <section className="relative h-[92vh] min-h-[640px] w-full overflow-hidden bg-bg">
+      <section className="relative h-[80vh] min-h-[560px] w-full overflow-hidden bg-bg sm:h-[92vh] sm:min-h-[640px]">
         {heroBanner?.image_url ? (
           <div className="absolute inset-0">
             <Image src={heroBanner.image_url} alt={heroBanner.title} fill priority className="object-cover opacity-40" unoptimized />
@@ -42,9 +42,13 @@ export default async function HomePage() {
           <>
             <CinematicHeroBackground />
             {/* video/tag nativo — sem JS, sem hidratação, sem risco de crash como
-                a cena WebGL anterior. Some sozinho se prefers-reduced-motion. */}
+                a cena WebGL anterior. Some sozinho se prefers-reduced-motion.
+                object-position deslocado no mobile: o vídeo é bem mais largo
+                (paisagem) que o recorte retrato da tela, e a modelo fica
+                posicionada à direita do quadro — sem isso, o corte central
+                padrão cortava ela ao meio. */}
             <video
-              className="hero-video absolute inset-0 h-full w-full object-cover"
+              className="hero-video absolute inset-0 h-full w-full object-cover object-[78%_center] sm:object-center"
               autoPlay
               muted
               loop
