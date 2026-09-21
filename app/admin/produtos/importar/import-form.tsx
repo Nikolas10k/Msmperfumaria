@@ -2,24 +2,21 @@
 
 import { useActionState } from "react";
 import Link from "next/link";
-import {
-  previewImportAction,
-  commitImportAction,
-  previewInitialState,
-  type PreviewState,
-} from "./actions";
+import { previewImportAction, commitImportAction, type PreviewState } from "./actions";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input, Label } from "@/components/ui/input";
 
+const initialState: PreviewState = { step: "idle" };
+
 export function ImportForm() {
   const [previewState, previewAction, previewPending] = useActionState<PreviewState, FormData>(
     previewImportAction,
-    previewInitialState,
+    initialState,
   );
   const [commitState, commitActionFn, commitPending] = useActionState<PreviewState, FormData>(
     commitImportAction,
-    previewInitialState,
+    initialState,
   );
 
   if (commitState.step === "done") {

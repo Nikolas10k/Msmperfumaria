@@ -22,10 +22,6 @@ export type PreviewState = {
   result?: { created: number; skipped: number };
 };
 
-const initialState: PreviewState = { step: "idle" };
-
-export { initialState as previewInitialState };
-
 function normalizeName(value: string): string {
   return value
     .normalize("NFD")
