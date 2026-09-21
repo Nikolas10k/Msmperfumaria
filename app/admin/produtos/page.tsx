@@ -23,9 +23,14 @@ export default async function ProductsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="font-serif-display text-2xl text-text-primary">Produtos</h1>
-        <Link href="/admin/produtos/novo">
-          <Button>Novo produto</Button>
-        </Link>
+        <div className="flex gap-3">
+          <Link href="/admin/produtos/importar">
+            <Button variant="secondary">Importar CSV</Button>
+          </Link>
+          <Link href="/admin/produtos/novo">
+            <Button>Novo produto</Button>
+          </Link>
+        </div>
       </div>
 
       <div className="overflow-hidden rounded-md border border-border">
