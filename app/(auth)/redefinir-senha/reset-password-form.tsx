@@ -14,26 +14,37 @@ export function ResetPasswordForm() {
   const [status, setStatus] = useState<"checking" | "ready" | "invalid">("checking");
 
   useEffect(() => {
-    // O e-mail de recuperação do Supabase (template padrão, sem SMTP
-    // customizado) entrega a sessão como fragmento da URL (#access_token=...),
-    // não como query param — o fragmento nunca chega ao servidor, então essa
-    // troca por uma sessão de verdade só pode acontecer aqui, no cliente.
-    const hash = window.location.hash.replace(/^#/, "");
-    const params = new URLSearchParams(hash);
-    const accessToken = params.get("access_token");
-    const refreshToken = params.get("refresh_token");
+    // O projeto usa o fluxo PKCE (padrão do @supabase/ssr): depois do link do
+    // e-mail ser verificado, o Supabase redireciona pra cá com ?code=... na
+    // query string. Essa troca por uma sessão de verdade só pode acontecer
+    // aqui, no cliente — o valor nunca é processado no server.
+    const supabase = createClient();
+    const code = new URL(window.location.href).searchParams.get("code");
 
-    if (!accessToken || !refreshToken) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setStatus("ready");
+    if (code) {
+      supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
+        window.history.replaceState(null, "", window.location.pathname);
+        setStatus(error ? "invalid" : "ready");
+      });
       return;
     }
 
-    const supabase = createClient();
-    supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken }).then(({ error }) => {
-      window.history.replaceState(null, "", window.location.pathname);
-      setStatus(error ? "invalid" : "ready");
-    });
+    // Fallback para o fluxo implícito (#access_token=...), caso o tipo de
+    // fluxo do projeto mude no futuro.
+    const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+    const accessToken = hashParams.get("access_token");
+    const refreshToken = hashParams.get("refresh_token");
+
+    if (accessToken && refreshToken) {
+      supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken }).then(({ error }) => {
+        window.history.replaceState(null, "", window.location.pathname);
+        setStatus(error ? "invalid" : "ready");
+      });
+      return;
+    }
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setStatus("ready");
   }, []);
 
   if (status === "checking") {
