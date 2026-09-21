@@ -27,6 +27,9 @@ export default async function ProductsPage() {
           <Link href="/admin/produtos/importar">
             <Button variant="secondary">Importar CSV</Button>
           </Link>
+          <Link href="/admin/produtos/fotos">
+            <Button variant="secondary">Upload de fotos</Button>
+          </Link>
           <Link href="/admin/produtos/novo">
             <Button>Novo produto</Button>
           </Link>
