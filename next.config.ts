@@ -40,6 +40,14 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  experimental: {
+    serverActions: {
+      // Padrão do Next.js é 1MB — pequeno demais pro upload de imagens de
+      // produto (fotos de câmera/celular passam disso fácil), e o admin
+      // pode enviar várias de uma vez no mesmo envio.
+      bodySizeLimit: "15mb",
+    },
+  },
   images: {
     remotePatterns: [
       {
