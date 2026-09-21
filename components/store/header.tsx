@@ -1,8 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Search, User, Heart, Menu } from "lucide-react";
+import { Search, User, Heart } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { CartLink } from "./cart-link";
+import { MobileNav } from "./mobile-nav";
 
 const NAV_LINKS = [
   { href: "/perfumes", label: "Perfumes" },
@@ -26,9 +27,7 @@ export async function StoreHeader() {
       </div>
 
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4">
-        <button className="text-text-primary md:hidden" aria-label="Menu">
-          <Menu size={22} />
-        </button>
+        <MobileNav links={NAV_LINKS} />
 
         <Link href="/" className="flex items-center gap-2">
           <Image src="/logo.jpg" alt="MSM Perfumaria" width={36} height={36} className="rounded-full" />
