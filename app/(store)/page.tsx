@@ -1,11 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ShieldCheck, PackageCheck, Truck, BadgeCheck } from "lucide-react";
+import { ShieldCheck, PackageCheck, Truck, BadgeCheck, ArrowUpRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getCatalogProducts } from "@/lib/catalog/list-products";
 import { ProductCard } from "@/components/store/product-card";
 import { ExpressDeliveryCheck } from "@/components/store/express-delivery-check";
-import { CinematicHeroBackground } from "@/components/store/cinematic-hero-background";
+import { LiquidRevealHero } from "@/components/store/liquid-reveal-hero";
 import { RoseAurora } from "@/components/store/rose-aurora";
 import { Button } from "@/components/ui/button";
 
@@ -41,26 +41,11 @@ export default async function HomePage() {
           </div>
         ) : (
           <>
-            <CinematicHeroBackground />
-            {/* video/tag nativo — sem JS, sem hidratação, sem risco de crash como
-                a cena WebGL anterior. Some sozinho se prefers-reduced-motion.
-                object-position deslocado no mobile: o vídeo é bem mais largo
-                (paisagem) que o recorte retrato da tela, e a modelo fica
-                posicionada à direita do quadro — sem isso, o corte central
-                padrão cortava ela ao meio. */}
-            <video
-              className="hero-video absolute inset-0 h-full w-full object-cover object-[78%_center] sm:object-center"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-              poster="/videos/hero-poster.jpg"
-              aria-hidden="true"
-            >
-              <source src="/videos/hero-perfume.mp4" type="video/mp4" />
-            </video>
-            {/* Mesma aurora do fundo, agora por cima do vídeo — "screen" só
+            {/* Revelação líquida: a mesma foto em duas leituras (escura por
+                baixo, vívida pintada pelo cursor) — ver liquid-reveal-hero.tsx.
+                Canvas 2D puro, sem WebGL, sem risco de travar. */}
+            <LiquidRevealHero src="/videos/hero-poster.jpg" />
+            {/* Mesma aurora do fundo, agora por cima do canvas — "screen" só
                 soma brilho rose, não esconde a imagem por baixo. Dá a
                 sensação de luz girando sobre a cena, igual à referência. */}
             <RoseAurora />
@@ -71,23 +56,28 @@ export default async function HomePage() {
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bg via-bg/10 to-bg/50" />
 
         <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
-          <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-rose-hairline bg-ink/50 px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.3em] text-rose-light backdrop-blur">
+          <span className="hero-reveal hero-reveal-1 mb-6 inline-flex items-center gap-2 rounded-full border border-rose-hairline bg-ink/50 px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.3em] text-rose-light backdrop-blur">
             Entrega expressa em Brasília
           </span>
-          <h1 className="max-w-4xl text-5xl font-bold uppercase leading-[0.95] tracking-tight text-text-primary sm:text-7xl lg:text-8xl">
+          <h1 className="hero-reveal hero-reveal-2 max-w-4xl text-5xl font-bold uppercase leading-[0.95] tracking-tight text-text-primary sm:text-7xl lg:text-8xl">
             Seu perfume.
             <br />
             <span className="text-gradient-rose">Sua assinatura.</span>
           </h1>
-          <p className="mt-6 max-w-md text-xs uppercase tracking-[0.25em] text-text-secondary sm:text-sm">
+          <p className="hero-reveal hero-reveal-3 mt-6 max-w-md text-xs uppercase tracking-[0.25em] text-text-secondary sm:text-sm">
             Perfumes importados originais para quem escolhe deixar uma marca
           </p>
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
+          <div className="hero-reveal hero-reveal-4 mt-10 flex flex-wrap justify-center gap-4">
             <Link href="/perfumes">
-              <Button size="lg">Explorar perfumes</Button>
+              <Button size="lg" className="btn-pill-spring group rounded-full pr-2">
+                Explorar perfumes
+                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-ink/15 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                  <ArrowUpRight size={16} />
+                </span>
+              </Button>
             </Link>
             <Link href="/perfumes?ofertas=1">
-              <Button size="lg" variant="secondary">
+              <Button size="lg" variant="secondary" className="btn-pill-spring rounded-full">
                 Ver ofertas
               </Button>
             </Link>

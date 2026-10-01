@@ -101,31 +101,6 @@ body {
   }
 }
 
-/* Hero cinematográfico: grão fino + feixe de luz, tudo em CSS puro (sem
-   WebGL nem asset externo) — leve e confiável em qualquer dispositivo. */
-.cinematic-beam {
-  position: absolute;
-  top: -20%;
-  left: 50%;
-  width: 60rem;
-  height: 140%;
-  transform: translateX(-50%) rotate(4deg);
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--color-rose-light) 16%, transparent),
-    transparent 70%
-  );
-}
-
-.cinematic-grain {
-  position: absolute;
-  inset: -10%;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.6) 1px, transparent 1px);
-  background-size: 3px 3px;
-  opacity: 0.05;
-  mix-blend-mode: overlay;
-}
-
 /* Aurora rose: véus de luz girando bem devagar, sobrepostos em "screen"
    pra parecer brilho de verdade (não uma forma sólida) — mesma ideia de
    efeito "aurora" usada em landing pages de SaaS modernas, só que só CSS
@@ -190,11 +165,6 @@ body {
   .rose-aurora__ring--2 {
     animation: none;
   }
-
-  /* Some e deixa só o fundo em CSS (aurora) por trás visível. */
-  .hero-video {
-    display: none;
-  }
 }
 
 /* Moldura de exibição dos perfumes (cards de produto, galeria): vinheta
@@ -236,6 +206,118 @@ body {
     transition: none;
   }
   .product-frame-card:hover {
+    transform: none;
+  }
+}
+
+/* Loader inicial de boas-vindas: conta 0→100 em tela cheia e depois "sobe"
+   (clip-path fechando de baixo pra cima) revelando a loja por baixo — ver
+   intro-loader.tsx. Mostra uma vez por sessão do navegador. */
+.intro-loader {
+  transition: clip-path 0.65s cubic-bezier(0.76, 0, 0.24, 1), opacity 0.5s ease 0.15s;
+  clip-path: inset(0% 0% 0% 0%);
+}
+
+.intro-loader--exit {
+  clip-path: inset(0% 0% 100% 0%);
+  opacity: 0;
+}
+
+@keyframes intro-loader-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.intro-loader__brand {
+  animation: intro-loader-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.intro-loader__count {
+  animation: intro-loader-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+
+.intro-loader__bar {
+  animation: intro-loader-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-loader,
+  .intro-loader__brand,
+  .intro-loader__count,
+  .intro-loader__bar {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* Entrada do hero em "spring": cada linha sobe revelada por um clip-path
+   (não é um fade simples), com atraso crescente entre elas. */
+@keyframes hero-line-in {
+  from {
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(14%);
+  }
+  to {
+    clip-path: inset(0 0 0% 0);
+    transform: translateY(0);
+  }
+}
+
+.hero-reveal {
+  animation: hero-line-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.hero-reveal-1 {
+  animation-delay: 0.05s;
+}
+
+.hero-reveal-2 {
+  animation-delay: 0.18s;
+}
+
+.hero-reveal-3 {
+  animation-delay: 0.3s;
+}
+
+.hero-reveal-4 {
+  animation-delay: 0.42s;
+}
+
+/* Botão em pílula com leve "mola" no hover (overshoot no cubic-bezier). */
+.btn-pill-spring {
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.45s ease;
+}
+
+.btn-pill-spring:hover {
+  transform: translateY(-2px) scale(1.035);
+}
+
+.btn-pill-spring:active {
+  transform: translateY(0) scale(0.98);
+  transition-duration: 0.15s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-reveal,
+  .hero-reveal-1,
+  .hero-reveal-2,
+  .hero-reveal-3,
+  .hero-reveal-4 {
+    animation: none;
+  }
+
+  .btn-pill-spring {
+    transition: none;
+  }
+
+  .btn-pill-spring:hover,
+  .btn-pill-spring:active {
     transform: none;
   }
 }
