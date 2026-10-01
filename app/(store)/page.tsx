@@ -6,6 +6,7 @@ import { getCatalogProducts } from "@/lib/catalog/list-products";
 import { ProductCard } from "@/components/store/product-card";
 import { ExpressDeliveryCheck } from "@/components/store/express-delivery-check";
 import { CinematicHeroBackground } from "@/components/store/cinematic-hero-background";
+import { RoseAurora } from "@/components/store/rose-aurora";
 import { Button } from "@/components/ui/button";
 
 export const revalidate = 60;
@@ -59,6 +60,10 @@ export default async function HomePage() {
             >
               <source src="/videos/hero-perfume.mp4" type="video/mp4" />
             </video>
+            {/* Mesma aurora do fundo, agora por cima do vídeo — "screen" só
+                soma brilho rose, não esconde a imagem por baixo. Dá a
+                sensação de luz girando sobre a cena, igual à referência. */}
+            <RoseAurora />
             <div className="pointer-events-none absolute inset-0 bg-bg/55" />
           </>
         )}

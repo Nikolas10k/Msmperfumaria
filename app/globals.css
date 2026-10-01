@@ -101,46 +101,8 @@ body {
   }
 }
 
-/* Hero cinematográfico: luzes suaves à deriva + grão fino, tudo em CSS
-   puro (só transform/opacity, sem WebGL nem asset externo) — leve e
-   confiável em qualquer dispositivo. */
-.cinematic-glow {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(90px);
-  will-change: transform;
-}
-
-.cinematic-glow-1 {
-  top: -10%;
-  left: 8%;
-  width: 46rem;
-  height: 46rem;
-  background: radial-gradient(circle, var(--color-rose-light), transparent 70%);
-  opacity: 0.55;
-  animation: cinematic-drift-1 22s ease-in-out infinite;
-}
-
-.cinematic-glow-2 {
-  bottom: -22%;
-  right: 4%;
-  width: 42rem;
-  height: 42rem;
-  background: radial-gradient(circle, var(--color-rose-dark), transparent 70%);
-  opacity: 0.6;
-  animation: cinematic-drift-2 26s ease-in-out infinite;
-}
-
-.cinematic-glow-3 {
-  top: 28%;
-  right: 28%;
-  width: 30rem;
-  height: 30rem;
-  background: radial-gradient(circle, var(--color-rose), transparent 70%);
-  opacity: 0.32;
-  animation: cinematic-drift-3 30s ease-in-out infinite;
-}
-
+/* Hero cinematográfico: grão fino + feixe de luz, tudo em CSS puro (sem
+   WebGL nem asset externo) — leve e confiável em qualquer dispositivo. */
 .cinematic-beam {
   position: absolute;
   top: -20%;
@@ -164,29 +126,72 @@ body {
   mix-blend-mode: overlay;
 }
 
-@keyframes cinematic-drift-1 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(4%, 6%) scale(1.1); }
+/* Aurora rose: véus de luz girando bem devagar, sobrepostos em "screen"
+   pra parecer brilho de verdade (não uma forma sólida) — mesma ideia de
+   efeito "aurora" usada em landing pages de SaaS modernas, só que só CSS
+   (sem WebGL, sem canvas) e na paleta rose/vinho da marca. Funciona em
+   dois contextos: como fundo (dentro de um wrapper com bg sólido, antes do
+   vídeo carregar) e por cima do vídeo (sem wrapper, o "screen" deixa só o
+   brilho passar e o vídeo aparece por baixo normalmente).  */
+.rose-aurora {
+  position: absolute;
+  inset: -30%;
+  z-index: 0;
+  overflow: hidden;
+  filter: blur(70px);
 }
 
-@keyframes cinematic-drift-2 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-5%, -4%) scale(1.08); }
+.rose-aurora__ring {
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  mix-blend-mode: screen;
 }
 
-@keyframes cinematic-drift-3 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-6%, 5%) scale(1.18); }
+.rose-aurora__ring--1 {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    var(--color-rose-light) 50deg,
+    transparent 110deg,
+    var(--color-rose) 190deg,
+    transparent 260deg,
+    var(--color-rose-dark) 320deg,
+    transparent 360deg
+  );
+  opacity: 0.65;
+  animation: aurora-spin-1 26s linear infinite;
+}
+
+.rose-aurora__ring--2 {
+  inset: 20%;
+  background: conic-gradient(
+    from 180deg,
+    transparent 0deg,
+    var(--color-rose-dark) 70deg,
+    transparent 150deg,
+    var(--color-rose-light) 230deg,
+    transparent 310deg
+  );
+  opacity: 0.45;
+  animation: aurora-spin-2 34s linear infinite reverse;
+}
+
+@keyframes aurora-spin-1 {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes aurora-spin-2 {
+  to { transform: rotate(-360deg); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cinematic-glow-1,
-  .cinematic-glow-2,
-  .cinematic-glow-3 {
+  .rose-aurora__ring--1,
+  .rose-aurora__ring--2 {
     animation: none;
   }
 
-  /* Some e deixa só o fundo em CSS (glow) por trás visível. */
+  /* Some e deixa só o fundo em CSS (aurora) por trás visível. */
   .hero-video {
     display: none;
   }
