@@ -36,7 +36,9 @@ export default async function SearchPage({
       </div>
 
       {q && products.length === 0 && (
-        <p className="py-10 text-center text-text-muted">Nenhum resultado encontrado.</p>
+        <div className="rounded-2xl border border-border py-16 text-center text-text-muted">
+          Nenhum resultado encontrado.
+        </div>
       )}
     </div>
   );

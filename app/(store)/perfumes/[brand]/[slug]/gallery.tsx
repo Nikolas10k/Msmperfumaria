@@ -9,7 +9,7 @@ export function Gallery({ images, alt }: { images: { url: string; altText: strin
 
   return (
     <div>
-      <div className="product-frame product-frame-card relative aspect-square w-full overflow-hidden rounded-lg border border-rose-hairline/25 bg-surface">
+      <div className="product-frame product-frame-card relative aspect-square w-full overflow-hidden rounded-2xl border border-rose-hairline/25 bg-surface">
         {current ? (
           <Image
             src={current.url}
@@ -30,7 +30,7 @@ export function Gallery({ images, alt }: { images: { url: string; altText: strin
             <button
               key={image.url}
               onClick={() => setActive(index)}
-              className={`relative h-16 w-16 shrink-0 overflow-hidden rounded-md border transition-colors ${
+              className={`chip-spring relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border transition-colors ${
                 index === active ? "border-rose" : "border-border hover:border-rose-hairline"
               }`}
             >

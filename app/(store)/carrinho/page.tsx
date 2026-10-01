@@ -59,7 +59,7 @@ export default function CartPage() {
 
   if (!loading && details.length === 0) {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-20 text-center">
+      <div className="mx-auto max-w-2xl px-4 py-24 text-center">
         <h1 className="mb-3 font-serif-display text-2xl text-text-primary">Seu carrinho está vazio</h1>
         <p className="mb-6 text-sm text-text-muted">Explore nosso catálogo e encontre sua próxima fragrância.</p>
         <Link href="/perfumes">
@@ -70,14 +70,17 @@ export default function CartPage() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10">
+    <div className="mx-auto max-w-5xl px-4 py-12">
       <h1 className="mb-8 font-serif-display text-3xl text-text-primary">Carrinho</h1>
 
       <div className="grid gap-10 lg:grid-cols-[1fr_360px]">
         <div className="space-y-4">
           {details.map((item) => (
-            <div key={item.variantId} className="flex gap-4 rounded-md border border-border bg-surface p-4">
-              <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-sm bg-surface-2">
+            <div
+              key={item.variantId}
+              className="flex gap-4 rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-rose-hairline/40"
+            >
+              <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-surface-2">
                 {item.imageUrl && (
                   <Image src={item.imageUrl} alt={item.productName} fill className="object-cover" unoptimized />
                 )}
@@ -97,7 +100,7 @@ export default function CartPage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <Select
-                    className="w-20"
+                    className="h-9 w-20 px-3"
                     value={item.quantity}
                     onChange={(e) => updateQuantity(item.variantId, Number(e.target.value))}
                   >
@@ -112,7 +115,7 @@ export default function CartPage() {
                   <p className="text-sm text-text-primary">{formatBRL(item.unitPrice * item.quantity)}</p>
                   <button
                     onClick={() => removeItem(item.variantId)}
-                    className="text-text-muted hover:text-danger"
+                    className="chip-spring flex h-8 w-8 items-center justify-center rounded-full text-text-muted hover:bg-danger/10 hover:text-danger"
                     aria-label="Remover item"
                   >
                     <Trash2 size={16} />
@@ -126,7 +129,7 @@ export default function CartPage() {
         </div>
 
         <div className="space-y-4">
-          <div className="rounded-md border border-border bg-surface p-5">
+          <div className="rounded-2xl border border-border bg-surface p-5">
             <div className="flex gap-2">
               <Input
                 placeholder="Código do cupom"

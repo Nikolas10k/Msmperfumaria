@@ -21,7 +21,7 @@ export function AddressForm({ onSaved }: { onSaved?: () => void }) {
   }, initialState);
 
   return (
-    <form action={formAction} className="grid gap-3 rounded-md border border-border bg-surface p-4 sm:grid-cols-2">
+    <form action={formAction} className="grid gap-3 rounded-2xl border border-border bg-surface p-5 sm:grid-cols-2">
       <div className="sm:col-span-2">
         <Label>Apelido do endereço</Label>
         <Input name="label" defaultValue="Principal" />

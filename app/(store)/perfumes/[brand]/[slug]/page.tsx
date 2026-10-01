@@ -119,7 +119,7 @@ export default async function ProductPage({
           <p className="text-sm uppercase tracking-wide text-text-muted">{product.brandName}</p>
           <h1 className="mt-1 font-serif-display text-3xl text-text-primary">{product.name}</h1>
 
-          <div className="mt-2 flex flex-wrap gap-2">
+          <div className="mt-3 flex flex-wrap gap-2">
             {product.isOriginal && <Badge>Original</Badge>}
             {product.isBestseller && <Badge variant="dark">Mais vendido</Badge>}
             {product.isNewArrival && <Badge variant="dark">Lançamento</Badge>}
@@ -130,7 +130,7 @@ export default async function ProductPage({
             <span className="capitalize">{product.gender}</span>
           </p>
 
-          <div className="mt-6">
+          <div className="mt-7">
             <PurchasePanel variants={product.variants} />
           </div>
 
@@ -138,17 +138,23 @@ export default async function ProductPage({
             <FavoriteButton productId={product.id} initialFavorited={favorited} isAuthenticated={!!user} />
           </div>
 
-          <div className="mt-6 grid grid-cols-3 gap-3 border-y border-border py-4 text-center text-xs text-text-muted">
-            <div className="flex flex-col items-center gap-1">
-              <ShieldCheck size={18} className="text-rose" />
+          <div className="mt-7 grid grid-cols-3 gap-3 border-y border-border py-5 text-center text-xs text-text-muted">
+            <div className="flex flex-col items-center gap-2">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full border border-rose-hairline">
+                <ShieldCheck size={16} className="text-rose" />
+              </span>
               Compra segura
             </div>
-            <div className="flex flex-col items-center gap-1">
-              <PackageCheck size={18} className="text-rose" />
+            <div className="flex flex-col items-center gap-2">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full border border-rose-hairline">
+                <PackageCheck size={16} className="text-rose" />
+              </span>
               Nota fiscal
             </div>
-            <div className="flex flex-col items-center gap-1">
-              <Truck size={18} className="text-rose" />
+            <div className="flex flex-col items-center gap-2">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full border border-rose-hairline">
+                <Truck size={16} className="text-rose" />
+              </span>
               Envio Brasil
             </div>
           </div>
@@ -158,7 +164,7 @@ export default async function ProductPage({
               href={whatsappHref}
               target="_blank"
               rel="noreferrer"
-              className="mt-4 flex items-center justify-center gap-2 rounded-sm border border-rose-hairline py-3 text-sm text-rose hover:bg-rose/10"
+              className="btn-spring mt-4 flex items-center justify-center gap-2 rounded-full border border-rose-hairline py-3 text-sm text-rose hover:bg-rose/10"
             >
               <MessageCircle size={16} /> Fale com um especialista
             </a>
@@ -170,17 +176,17 @@ export default async function ProductPage({
         </div>
       </div>
 
-      <section className="mt-14 grid gap-8 lg:grid-cols-3">
-        <div>
-          <h2 className="mb-3 text-sm uppercase tracking-wide text-text-secondary">Notas de saída</h2>
+      <section className="mt-16 grid gap-6 sm:grid-cols-3">
+        <div className="rounded-2xl border border-border bg-surface p-5">
+          <h2 className="mb-3 text-xs uppercase tracking-[0.2em] text-rose-light">Notas de saída</h2>
           <p className="text-sm text-text-primary">{product.topNotes.join(", ") || "—"}</p>
         </div>
-        <div>
-          <h2 className="mb-3 text-sm uppercase tracking-wide text-text-secondary">Notas de coração</h2>
+        <div className="rounded-2xl border border-border bg-surface p-5">
+          <h2 className="mb-3 text-xs uppercase tracking-[0.2em] text-rose-light">Notas de coração</h2>
           <p className="text-sm text-text-primary">{product.heartNotes.join(", ") || "—"}</p>
         </div>
-        <div>
-          <h2 className="mb-3 text-sm uppercase tracking-wide text-text-secondary">Notas de fundo</h2>
+        <div className="rounded-2xl border border-border bg-surface p-5">
+          <h2 className="mb-3 text-xs uppercase tracking-[0.2em] text-rose-light">Notas de fundo</h2>
           <p className="text-sm text-text-primary">{product.baseNotes.join(", ") || "—"}</p>
         </div>
       </section>
@@ -192,6 +198,7 @@ export default async function ProductPage({
 
       {relatedProducts.length > 0 && (
         <section className="mt-16">
+          <p className="mb-2 text-xs uppercase tracking-[0.3em] text-rose-light">Combina com</p>
           <h2 className="mb-6 font-serif-display text-2xl text-text-primary">Você também pode gostar</h2>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
             {relatedProducts.map((p) => (

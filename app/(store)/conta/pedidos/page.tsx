@@ -41,7 +41,7 @@ export default async function MyOrdersPage() {
           <Link
             key={order.id}
             href={`/conta/pedidos/${order.id}`}
-            className="flex items-center justify-between rounded-md border border-border bg-surface p-4 hover:border-rose-hairline"
+            className="product-frame-card flex items-center justify-between rounded-2xl border border-border bg-surface p-4 hover:border-rose-hairline"
           >
             <div>
               <p className="text-text-primary">{order.order_number}</p>
@@ -54,7 +54,9 @@ export default async function MyOrdersPage() {
           </Link>
         ))}
         {(orders ?? []).length === 0 && (
-          <p className="py-10 text-center text-text-muted">Você ainda não fez nenhum pedido.</p>
+          <div className="rounded-2xl border border-border py-16 text-center text-text-muted">
+            Você ainda não fez nenhum pedido.
+          </div>
         )}
       </div>
     </div>

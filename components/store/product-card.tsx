@@ -8,7 +8,7 @@ export function ProductCard({ product }: { product: CatalogProduct }) {
   return (
     <Link
       href={`/perfumes/${product.brandSlug}/${product.slug}`}
-      className="product-frame-card group block overflow-hidden rounded-lg border border-rose-hairline/25 bg-surface hover:border-rose-hairline"
+      className="product-frame-card group block overflow-hidden rounded-xl border border-rose-hairline/25 bg-surface hover:border-rose-hairline"
     >
       <div className="product-frame relative aspect-square overflow-hidden bg-surface-2">
         {product.imageUrl ? (
@@ -16,14 +16,14 @@ export function ProductCard({ product }: { product: CatalogProduct }) {
             src={product.imageUrl}
             alt={`${product.brandName} ${product.name}`}
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover transition-transform duration-500 group-hover:scale-110"
             sizes="(max-width: 768px) 50vw, 25vw"
           />
         ) : (
           <div className="flex h-full items-center justify-center text-xs text-text-muted">Sem imagem</div>
         )}
 
-        <div className="absolute left-2 top-2 z-10 flex flex-col gap-1">
+        <div className="absolute left-2 top-2 z-10 flex flex-col gap-1.5">
           {product.isBestseller && <Badge>Mais vendido</Badge>}
           {product.isNewArrival && <Badge variant="dark">Lançamento</Badge>}
           {product.hasDiscount && <Badge variant="danger">-{product.discountPercent}%</Badge>}

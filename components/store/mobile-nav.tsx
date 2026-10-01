@@ -35,19 +35,19 @@ export function MobileNav({ links }: { links: { href: string; label: string }[] 
       <button
         type="button"
         aria-label="Fechar menu"
-        className="absolute inset-0 bg-ink/70 backdrop-blur-sm"
+        className="mobile-nav-overlay absolute inset-0 bg-ink/70 backdrop-blur-sm"
         onClick={() => setOpen(false)}
       />
-      <nav className="absolute inset-y-0 left-0 flex w-72 max-w-[80vw] flex-col gap-1 overflow-y-auto bg-surface p-6 shadow-xl">
-        <div className="mb-4 flex items-center justify-between">
+      <nav className="mobile-nav-panel absolute inset-y-0 left-0 flex w-72 max-w-[80vw] flex-col gap-1 overflow-y-auto bg-surface p-6 shadow-xl">
+        <div className="mb-6 flex items-center justify-between">
           <span className="font-serif-display text-lg text-text-primary">Menu</span>
           <button
             type="button"
             aria-label="Fechar menu"
             onClick={() => setOpen(false)}
-            className="text-text-secondary hover:text-rose"
+            className="flex h-9 w-9 items-center justify-center rounded-full text-text-secondary transition-colors hover:bg-surface-2 hover:text-rose"
           >
-            <X size={22} />
+            <X size={20} />
           </button>
         </div>
         {links.map((link) => (
@@ -55,7 +55,7 @@ export function MobileNav({ links }: { links: { href: string; label: string }[] 
             key={link.label}
             href={link.href}
             onClick={() => setOpen(false)}
-            className="rounded-sm px-3 py-3 text-sm uppercase tracking-wide text-text-secondary hover:bg-surface-2 hover:text-rose"
+            className="chip-spring rounded-full px-4 py-3 text-sm uppercase tracking-wide text-text-secondary hover:bg-surface-2 hover:text-rose"
           >
             {link.label}
           </Link>
@@ -68,11 +68,11 @@ export function MobileNav({ links }: { links: { href: string; label: string }[] 
     <>
       <button
         type="button"
-        className="text-text-primary md:hidden"
+        className="flex h-10 w-10 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-surface md:hidden"
         aria-label="Abrir menu"
         onClick={() => setOpen(true)}
       >
-        <Menu size={22} />
+        <Menu size={20} />
       </button>
 
       {mounted && overlay ? createPortal(overlay, document.body) : null}

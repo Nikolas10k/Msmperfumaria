@@ -47,18 +47,19 @@ export default async function CatalogPage({
   ]);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-10">
-      <h1 className="mb-2 font-serif-display text-3xl text-text-primary">Perfumes</h1>
-      <p className="mb-8 text-sm text-text-muted">{products.length} produtos encontrados</p>
+    <div className="mx-auto max-w-7xl px-4 py-12">
+      <p className="mb-2 text-xs uppercase tracking-[0.3em] text-rose-light">Catálogo</p>
+      <h1 className="mb-2 font-serif-display text-4xl text-text-primary">Perfumes</h1>
+      <p className="mb-10 text-sm text-text-muted">{products.length} produtos encontrados</p>
 
-      <div className="grid gap-8 lg:grid-cols-[240px_1fr]">
+      <div className="grid gap-10 lg:grid-cols-[260px_1fr]">
         <CatalogFiltersBar brands={brands ?? []} />
 
         <div>
           {products.length === 0 ? (
-            <p className="py-16 text-center text-text-muted">
+            <div className="rounded-2xl border border-border py-16 text-center text-text-muted">
               Nenhum produto encontrado com esses filtros.
-            </p>
+            </div>
           ) : (
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
               {products.map((product) => (

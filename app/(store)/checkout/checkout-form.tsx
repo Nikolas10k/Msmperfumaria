@@ -113,22 +113,33 @@ export function CheckoutForm({ addresses, initialCoupon }: { addresses: Address[
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
+    <form onSubmit={handleSubmit} className="space-y-6">
       <Card>
-        <h2 className="mb-4 text-sm font-medium uppercase tracking-wide text-text-secondary">
-          1. Endereço de entrega
+        <h2 className="mb-4 flex items-center gap-3 text-sm font-medium uppercase tracking-wide text-text-secondary">
+          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-rose text-xs text-ink">1</span>
+          Endereço de entrega
         </h2>
 
         {addresses.length > 0 && (
-          <div className="mb-4 flex gap-4 text-sm">
-            <label className="flex items-center gap-2">
-              <input type="radio" checked={addressMode === "existing"} onChange={() => setAddressMode("existing")} />
+          <div className="mb-4 flex gap-2 text-sm">
+            <button
+              type="button"
+              onClick={() => setAddressMode("existing")}
+              className={`chip-spring rounded-full border px-4 py-2 ${
+                addressMode === "existing" ? "border-rose bg-rose/10 text-rose-light" : "border-border text-text-secondary"
+              }`}
+            >
               Usar endereço salvo
-            </label>
-            <label className="flex items-center gap-2">
-              <input type="radio" checked={addressMode === "new"} onChange={() => setAddressMode("new")} />
+            </button>
+            <button
+              type="button"
+              onClick={() => setAddressMode("new")}
+              className={`chip-spring rounded-full border px-4 py-2 ${
+                addressMode === "new" ? "border-rose bg-rose/10 text-rose-light" : "border-border text-text-secondary"
+              }`}
+            >
               Novo endereço
-            </label>
+            </button>
           </div>
         )}
 
@@ -196,17 +207,28 @@ export function CheckoutForm({ addresses, initialCoupon }: { addresses: Address[
       </Card>
 
       <Card>
-        <h2 className="mb-4 text-sm font-medium uppercase tracking-wide text-text-secondary">2. Entrega</h2>
+        <h2 className="mb-4 flex items-center gap-3 text-sm font-medium uppercase tracking-wide text-text-secondary">
+          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-rose text-xs text-ink">2</span>
+          Entrega
+        </h2>
         <div className="space-y-2">
-          <label className="flex items-center justify-between rounded-sm border border-border p-3 text-sm">
+          <label
+            className={`chip-spring flex items-center justify-between rounded-2xl border p-4 text-sm ${
+              shippingChoice === "standard" ? "border-rose bg-rose/5" : "border-border"
+            }`}
+          >
             <span className="flex items-center gap-2">
               <input type="radio" checked={shippingChoice === "standard"} onChange={() => setShippingChoice("standard")} />
               Frete padrão (envio para todo o Brasil)
             </span>
           </label>
           <label
-            className={`flex items-center justify-between rounded-sm border p-3 text-sm ${
-              expressCheck?.available ? "border-rose-hairline" : "border-border opacity-50"
+            className={`chip-spring flex items-center justify-between rounded-2xl border p-4 text-sm ${
+              !expressCheck?.available
+                ? "border-border opacity-50"
+                : shippingChoice === "express"
+                  ? "border-rose bg-rose/5"
+                  : "border-rose-hairline"
             }`}
           >
             <span className="flex items-center gap-2">
@@ -228,13 +250,24 @@ export function CheckoutForm({ addresses, initialCoupon }: { addresses: Address[
       </Card>
 
       <Card>
-        <h2 className="mb-4 text-sm font-medium uppercase tracking-wide text-text-secondary">3. Pagamento</h2>
+        <h2 className="mb-4 flex items-center gap-3 text-sm font-medium uppercase tracking-wide text-text-secondary">
+          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-rose text-xs text-ink">3</span>
+          Pagamento
+        </h2>
         <div className="space-y-2">
-          <label className="flex items-center gap-2 rounded-sm border border-border p-3 text-sm">
+          <label
+            className={`chip-spring flex items-center gap-2 rounded-2xl border p-4 text-sm ${
+              paymentMethod === "pix" ? "border-rose bg-rose/5" : "border-border"
+            }`}
+          >
             <input type="radio" checked={paymentMethod === "pix"} onChange={() => setPaymentMethod("pix")} />
             PIX (aprovação rápida)
           </label>
-          <label className="flex items-center gap-2 rounded-sm border border-border p-3 text-sm">
+          <label
+            className={`chip-spring flex items-center gap-2 rounded-2xl border p-4 text-sm ${
+              paymentMethod === "credit_card" ? "border-rose bg-rose/5" : "border-border"
+            }`}
+          >
             <input type="radio" checked={paymentMethod === "credit_card"} onChange={() => setPaymentMethod("credit_card")} />
             Cartão de crédito
           </label>

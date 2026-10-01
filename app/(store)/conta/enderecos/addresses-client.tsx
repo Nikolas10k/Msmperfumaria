@@ -16,7 +16,7 @@ export function AddressesClient({ addresses }: { addresses: Address[] }) {
   return (
     <div className="space-y-4">
       {addresses.map((address) => (
-        <div key={address.id} className="flex items-center justify-between rounded-md border border-border bg-surface p-4">
+        <div key={address.id} className="flex items-center justify-between rounded-2xl border border-border bg-surface p-4">
           <div>
             <p className="text-sm text-text-primary">
               {address.label} {address.is_default && <Badge className="ml-2">Padrão</Badge>}

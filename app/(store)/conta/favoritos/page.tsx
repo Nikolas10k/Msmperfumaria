@@ -31,7 +31,9 @@ export default async function FavoritesPage() {
       <h1 className="mb-8 font-serif-display text-3xl text-text-primary">Meus favoritos</h1>
 
       {products.length === 0 ? (
-        <p className="py-10 text-center text-text-muted">Você ainda não salvou nenhum favorito.</p>
+        <div className="rounded-2xl border border-border py-16 text-center text-text-muted">
+          Você ainda não salvou nenhum favorito.
+        </div>
       ) : (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {products.map((product) => (

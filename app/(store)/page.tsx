@@ -69,7 +69,7 @@ export default async function HomePage() {
           </p>
           <div className="hero-reveal hero-reveal-4 mt-10 flex flex-wrap justify-center gap-4">
             <Link href="/perfumes">
-              <Button size="lg" className="btn-pill-spring group rounded-full pr-2">
+              <Button size="lg" className="group pr-2">
                 Explorar perfumes
                 <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-ink/15 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
                   <ArrowUpRight size={16} />
@@ -77,7 +77,7 @@ export default async function HomePage() {
               </Button>
             </Link>
             <Link href="/perfumes?ofertas=1">
-              <Button size="lg" variant="secondary" className="btn-pill-spring rounded-full">
+              <Button size="lg" variant="secondary">
                 Ver ofertas
               </Button>
             </Link>
@@ -90,27 +90,27 @@ export default async function HomePage() {
       </section>
 
       {(categories ?? []).length > 0 && (
-        <section className="mx-auto max-w-7xl px-4 py-12">
-          <h2 className="mb-6 font-serif-display text-2xl text-text-primary">Categorias</h2>
+        <section className="mx-auto max-w-7xl px-4 py-16">
+          <p className="mb-2 text-xs uppercase tracking-[0.3em] text-rose-light">Explore</p>
+          <h2 className="mb-8 font-serif-display text-3xl text-text-primary">Categorias</h2>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
             {(categories ?? []).map((category) => (
               <Link
                 key={category.id}
                 href={`/perfumes?categoria=${category.slug}`}
-                className="group overflow-hidden rounded-md border border-border bg-surface"
+                className="product-frame-card group relative block aspect-square overflow-hidden rounded-xl border border-rose-hairline/20 bg-surface"
               >
-                <div className="relative aspect-square bg-surface-2">
-                  {category.image_url && (
-                    <Image
-                      src={category.image_url}
-                      alt={category.name}
-                      fill
-                      className="object-cover transition-transform group-hover:scale-105"
-                      unoptimized
-                    />
-                  )}
-                </div>
-                <p className="p-3 text-center text-xs uppercase tracking-wide text-text-secondary group-hover:text-rose">
+                {category.image_url && (
+                  <Image
+                    src={category.image_url}
+                    alt={category.name}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    unoptimized
+                  />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent" />
+                <p className="absolute inset-x-0 bottom-0 p-3 text-center text-xs uppercase tracking-wide text-text-primary">
                   {category.name}
                 </p>
               </Link>
@@ -120,11 +120,18 @@ export default async function HomePage() {
       )}
 
       {featured.length > 0 && (
-        <section className="mx-auto max-w-7xl px-4 py-12">
-          <div className="mb-6 flex items-center justify-between">
-            <h2 className="font-serif-display text-2xl text-text-primary">Os mais desejados</h2>
-            <Link href="/perfumes" className="text-sm text-rose hover:text-rose-light">
-              Ver todos →
+        <section className="mx-auto max-w-7xl px-4 py-16">
+          <div className="mb-8 flex items-end justify-between">
+            <div>
+              <p className="mb-2 text-xs uppercase tracking-[0.3em] text-rose-light">Curadoria</p>
+              <h2 className="font-serif-display text-3xl text-text-primary">Os mais desejados</h2>
+            </div>
+            <Link
+              href="/perfumes"
+              className="group hidden items-center gap-1 text-sm text-text-secondary hover:text-rose sm:flex"
+            >
+              Ver todos
+              <ArrowUpRight size={15} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Link>
           </div>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
@@ -135,7 +142,7 @@ export default async function HomePage() {
         </section>
       )}
 
-      <section className="border-t border-border bg-surface py-12">
+      <section className="border-t border-border bg-surface py-14">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 sm:grid-cols-4">
           {[
             { icon: BadgeCheck, label: "100% original" },
@@ -143,8 +150,10 @@ export default async function HomePage() {
             { icon: PackageCheck, label: "Nota fiscal em todos os pedidos" },
             { icon: Truck, label: "Envio para todo o Brasil" },
           ].map(({ icon: Icon, label }) => (
-            <div key={label} className="flex flex-col items-center text-center">
-              <Icon className="mb-2 text-rose" size={28} />
+            <div key={label} className="flex flex-col items-center gap-3 text-center">
+              <span className="flex h-12 w-12 items-center justify-center rounded-full border border-rose-hairline bg-ink/40">
+                <Icon className="text-rose" size={20} />
+              </span>
               <p className="text-xs text-text-secondary">{label}</p>
             </div>
           ))}

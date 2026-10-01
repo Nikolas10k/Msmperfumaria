@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
+import { Minus, Plus } from "lucide-react";
 import { useCart } from "@/lib/cart/cart-context";
 import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/input";
@@ -23,15 +24,17 @@ export function PurchasePanel({ variants }: { variants: ProductVariantDetail[] }
 
   const outOfStock = variant.stock <= 0;
   const installmentValue = variant.price.finalPrice / variant.installmentsMax;
+  const maxQuantity = Math.min(5, Math.max(1, variant.stock));
+  const clampedQuantity = Math.min(quantity, maxQuantity);
 
   function handleAddToCart() {
-    addItem(variant!.id, quantity);
+    addItem(variant!.id, clampedQuantity);
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   }
 
   function handleBuyNow() {
-    addItem(variant!.id, quantity);
+    addItem(variant!.id, clampedQuantity);
     router.push("/carrinho");
   }
 
@@ -65,18 +68,27 @@ export function PurchasePanel({ variants }: { variants: ProductVariantDetail[] }
       )}
 
       <div className="flex items-center gap-3">
-        <Select
-          value={quantity}
-          onChange={(e) => setQuantity(Number(e.target.value))}
-          className="w-24"
-          disabled={outOfStock}
-        >
-          {Array.from({ length: Math.min(5, Math.max(1, variant.stock)) }, (_, i) => i + 1).map((n) => (
-            <option key={n} value={n}>
-              {n}
-            </option>
-          ))}
-        </Select>
+        <div className="flex h-11 items-center rounded-full border border-border">
+          <button
+            type="button"
+            disabled={outOfStock || clampedQuantity <= 1}
+            onClick={() => setQuantity((q) => Math.max(1, Math.min(q, maxQuantity) - 1))}
+            aria-label="Diminuir quantidade"
+            className="chip-spring flex h-full w-10 items-center justify-center text-text-secondary disabled:opacity-30"
+          >
+            <Minus size={14} />
+          </button>
+          <span className="w-8 text-center text-sm tabular-nums text-text-primary">{clampedQuantity}</span>
+          <button
+            type="button"
+            disabled={outOfStock || clampedQuantity >= maxQuantity}
+            onClick={() => setQuantity((q) => Math.min(maxQuantity, q + 1))}
+            aria-label="Aumentar quantidade"
+            className="chip-spring flex h-full w-10 items-center justify-center text-text-secondary disabled:opacity-30"
+          >
+            <Plus size={14} />
+          </button>
+        </div>
         {outOfStock && <span className="text-sm text-danger">Esgotado no momento</span>}
       </div>
 

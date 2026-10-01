@@ -30,7 +30,7 @@ export function ExpressDeliveryCheck({ onResolved }: { onResolved?: (result: Exp
   }
 
   return (
-    <div className="rounded-md border border-rose-hairline bg-surface p-4">
+    <div className="rounded-2xl border border-rose-hairline bg-surface p-5">
       <p className="mb-2 flex items-center gap-2 text-sm text-text-primary">
         <Zap size={16} className="text-rose" />É de Brasília? Confira o prazo de entrega expressa.
       </p>

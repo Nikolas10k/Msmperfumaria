@@ -289,16 +289,17 @@ body {
   animation-delay: 0.42s;
 }
 
-/* Botão em pílula com leve "mola" no hover (overshoot no cubic-bezier). */
-.btn-pill-spring {
+/* Mola no hover de botões (overshoot no cubic-bezier) — classe de base do
+   componente Button, usada em todo o site. */
+.btn-spring {
   transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.45s ease;
 }
 
-.btn-pill-spring:hover {
+.btn-spring:hover {
   transform: translateY(-2px) scale(1.035);
 }
 
-.btn-pill-spring:active {
+.btn-spring:active {
   transform: translateY(0) scale(0.98);
   transition-duration: 0.15s;
 }
@@ -312,12 +313,99 @@ body {
     animation: none;
   }
 
-  .btn-pill-spring {
+  .btn-spring {
     transition: none;
   }
 
-  .btn-pill-spring:hover,
-  .btn-pill-spring:active {
+  .btn-spring:hover,
+  .btn-spring:active {
     transform: none;
+  }
+}
+
+/* Sublinhado em "mola" nos links de navegação do header: cresce do centro
+   pra fora, com leve overshoot. */
+.nav-link-underline {
+  position: relative;
+}
+
+.nav-link-underline::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 2px;
+  height: 1px;
+  width: 0;
+  background: var(--color-rose);
+  transition: width 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), left 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.nav-link-underline:hover::after {
+  left: 15%;
+  width: 70%;
+}
+
+/* Chip de filtro (catálogo) e opção selecionável (checkout): mesma mola de
+   escala do btn-spring, só que mais sutil, pra uso em elementos menores. */
+.chip-spring {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s ease, color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.chip-spring:hover {
+  transform: scale(1.04);
+}
+
+.chip-spring:active {
+  transform: scale(0.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-link-underline::after {
+    transition: none;
+  }
+
+  .chip-spring {
+    transition: none;
+  }
+
+  .chip-spring:hover,
+  .chip-spring:active {
+    transform: none;
+  }
+}
+
+/* Menu mobile: painel desliza da esquerda com leve overshoot, overlay só
+   desvanece. */
+@keyframes mobile-nav-panel-in {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes mobile-nav-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.mobile-nav-panel {
+  animation: mobile-nav-panel-in 0.4s cubic-bezier(0.22, 1.12, 0.36, 1) both;
+}
+
+.mobile-nav-overlay {
+  animation: mobile-nav-overlay-in 0.3s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-nav-panel,
+  .mobile-nav-overlay {
+    animation: none;
   }
 }
