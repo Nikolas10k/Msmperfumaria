@@ -70,11 +70,26 @@ export default async function HomePage() {
           Nota fiscal em todos os pedidos
         </p>
 
-        <div className="hero-reveal hero-reveal-2 absolute left-[3%] bottom-[-2%] hidden aspect-[4/5] w-[clamp(110px,15vw,230px)] -rotate-2 overflow-hidden rounded-t-[6px] shadow-[0_30px_50px_-20px_rgba(0,0,0,0.55)] lg:block">
-          <Image src="/videos/hero-poster.jpg" alt="" fill className="object-cover" sizes="230px" />
+        {/* Laterais: fotos de perfumes do banco (ou a foto de reserva, sem produtos). */}
+        <div className="hero-reveal hero-reveal-2 absolute left-[3%] bottom-[-2%] hidden aspect-[4/5] w-[clamp(110px,15vw,230px)] -rotate-2 overflow-hidden rounded-t-[6px] bg-paper shadow-[0_30px_50px_-20px_rgba(0,0,0,0.55)] lg:block">
+          <Image
+            src={featured[0]?.imageUrl ?? "/videos/hero-poster.jpg"}
+            alt={featured[0] ? `${featured[0].brandName} ${featured[0].name}` : ""}
+            fill
+            className="object-contain p-3"
+            sizes="230px"
+            unoptimized={!featured[0]?.imageUrl}
+          />
         </div>
-        <div className="hero-reveal hero-reveal-2 absolute right-[3%] bottom-[-2%] hidden aspect-[5/4] w-[clamp(110px,15vw,230px)] rotate-2 overflow-hidden rounded-t-[6px] shadow-[0_30px_50px_-20px_rgba(0,0,0,0.55)] lg:block">
-          <Image src="/videos/hero-poster.jpg" alt="" fill className="object-cover object-[85%_50%]" sizes="230px" />
+        <div className="hero-reveal hero-reveal-2 absolute right-[3%] bottom-[-2%] hidden aspect-[5/4] w-[clamp(110px,15vw,230px)] rotate-2 overflow-hidden rounded-t-[6px] bg-paper shadow-[0_30px_50px_-20px_rgba(0,0,0,0.55)] lg:block">
+          <Image
+            src={featured[1]?.imageUrl ?? "/videos/hero-poster.jpg"}
+            alt={featured[1] ? `${featured[1].brandName} ${featured[1].name}` : ""}
+            fill
+            className="object-contain p-3"
+            sizes="230px"
+            unoptimized={!featured[1]?.imageUrl}
+          />
         </div>
 
         <div className="absolute inset-x-0 top-[12%] flex flex-col items-center px-4 text-center md:top-[30%]">

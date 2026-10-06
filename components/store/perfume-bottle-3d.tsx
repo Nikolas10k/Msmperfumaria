@@ -3,11 +3,23 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Frasco de perfume 3D no centro do hero (three.js). Mesma mecânica da pedra
- * de obsidiana do site do condomínio: segue o ponteiro, gira devagar e flutua.
- * Fica atrás do texto e não captura cliques. Se o WebGL falhar, o canvas some
- * e a página segue normal.
+ * Frasco 3D no centro do hero (three.js), no estilo do Sauvage: vidro azul-escuro,
+ * tampa preta com ranhuras e o rótulo da frente recortado da própria foto do
+ * produto (public/images/sauvage.png). Segue o ponteiro, gira devagar e flutua.
+ * Fica atrás do texto e não captura cliques. Se o WebGL ou a imagem falharem,
+ * o canvas some e a página segue normal.
  */
+const LABEL_SRC = "/images/sauvage.png";
+
+function loadImage(src: string): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = src;
+  });
+}
+
 export function PerfumeBottle3D() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -20,8 +32,12 @@ export function PerfumeBottle3D() {
     let raf = 0;
     let dispose: (() => void) | undefined;
 
-    Promise.all([import("three"), import("three/examples/jsm/environments/RoomEnvironment.js")])
-      .then(([THREE, { RoomEnvironment }]) => {
+    Promise.all([
+      import("three"),
+      import("three/examples/jsm/environments/RoomEnvironment.js"),
+      loadImage(LABEL_SRC),
+    ])
+      .then(([THREE, { RoomEnvironment }, label]) => {
         // StrictMode monta/desmonta o efeito duas vezes em dev; se já desmontou, não cria nada.
         if (disposed) return;
 
@@ -35,65 +51,84 @@ export function PerfumeBottle3D() {
         const pmrem = new THREE.PMREMGenerator(renderer);
         scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
 
-        const key = new THREE.DirectionalLight(0xffe6ef, 1.8);
+        const key = new THREE.DirectionalLight(0xdfe9ff, 1.9);
         key.position.set(3, 4, 5);
-        const rim = new THREE.DirectionalLight(0xff4d8d, 2.2);
+        const rim = new THREE.DirectionalLight(0x6f8fd6, 2.2);
         rim.position.set(-4, 2, -3);
         scene.add(key, rim);
 
         const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
-        camera.position.z = 9;
+        camera.position.z = 10;
 
         const bottle = new THREE.Group();
         scene.add(bottle);
 
-        // perfil do vidro (raio, altura), suavizado com spline e girado em torno do eixo
-        // flacon alto e estreito, com ombro arredondado e gargalo curto
-        const glassProfile = [
-          [0, -1.2], [0.5, -1.2], [0.58, -1.14], [0.6, -1.02], [0.6, 0.1],
-          [0.58, 0.28], [0.46, 0.38], [0.2, 0.44], [0.14, 0.5], [0.14, 0.56],
+        // corpo de vidro azul-escuro: perfil (raio, altura) girado em torno do eixo
+        const bodyProfile = [
+          [0, -1.1], [0.5, -1.1], [0.55, -1.05], [0.56, -0.95], [0.56, 0.95],
+          [0.52, 1.0], [0.46, 1.02], [0, 1.02],
         ].map(([x, y]) => new THREE.Vector2(x, y));
-        const glassGeo = new THREE.LatheGeometry(new THREE.SplineCurve(glassProfile).getPoints(64), 96);
-
-        const liquidProfile = [
-          [0, -1.1], [0.46, -1.1], [0.52, -1.05], [0.54, -0.95], [0.54, 0.08],
-          [0.52, 0.2], [0.4, 0.3], [0, 0.33],
-        ].map(([x, y]) => new THREE.Vector2(x, y));
-        const liquidGeo = new THREE.LatheGeometry(new THREE.SplineCurve(liquidProfile).getPoints(64), 96);
-
+        const bodyGeo = new THREE.LatheGeometry(new THREE.SplineCurve(bodyProfile).getPoints(64), 96);
         const glassMat = new THREE.MeshPhysicalMaterial({
-          color: 0xffeef4,
-          transmission: 0.95,
-          thickness: 1.2,
-          roughness: 0.03,
-          ior: 1.5,
+          color: 0x0c1a33,
+          metalness: 0.1,
+          roughness: 0.12,
           clearcoat: 1,
-          clearcoatRoughness: 0.04,
-          attenuationColor: new THREE.Color(0xc2185b),
-          attenuationDistance: 2.5,
+          clearcoatRoughness: 0.05,
+          transmission: 0.15,
+          thickness: 0.8,
           side: THREE.DoubleSide,
         });
-        const liquidMat = new THREE.MeshPhysicalMaterial({
-          color: 0xb0245c,
-          roughness: 0.1,
-          transmission: 0.25,
-          thickness: 0.8,
-          emissive: 0x3a0616,
-          emissiveIntensity: 0.35,
-        });
-        bottle.add(new THREE.Mesh(glassGeo, glassMat), new THREE.Mesh(liquidGeo, liquidMat));
+        bottle.add(new THREE.Mesh(bodyGeo, glassMat));
 
-        // tampa preta metálica com anel dourado no pescoço
-        const capMat = new THREE.MeshPhysicalMaterial({ color: 0x111010, metalness: 0.9, roughness: 0.2, clearcoat: 1 });
-        // tampa em bloco quadrado, como nos frascos de perfume de luxo
-        // a base da tampa encosta no ombro do vidro (y ≈ 0.44)
-        const cap = new THREE.Mesh(new THREE.BoxGeometry(0.82, 0.9, 0.82), capMat);
-        cap.position.y = 0.9;
-        const goldMat = new THREE.MeshStandardMaterial({ color: 0xd9b77a, metalness: 1, roughness: 0.25 });
-        const collar = new THREE.Mesh(new THREE.TorusGeometry(0.2, 0.03, 16, 64), goldMat);
-        collar.rotation.x = Math.PI / 2;
-        collar.position.y = 0.46;
-        bottle.add(cap, collar);
+        // frente: faixa com o recorte da foto do produto (rótulo prateado "SAUVAGE PARFUM")
+        const crop = document.createElement("canvas");
+        // recorte interno do vidro: tira as bordas claras do fundo da foto e a
+        // marca da base (logo do fabricante), que fica abaixo de 74% da altura
+        const sw = label.naturalWidth * 0.5;
+        const sh = label.naturalHeight * 0.47;
+        crop.width = 512;
+        crop.height = Math.round((512 * sh) / sw);
+        crop.getContext("2d")?.drawImage(
+          label,
+          label.naturalWidth * 0.25,
+          label.naturalHeight * 0.27,
+          sw,
+          sh,
+          0,
+          0,
+          crop.width,
+          crop.height,
+        );
+        const labelTex = new THREE.CanvasTexture(crop);
+        labelTex.colorSpace = THREE.SRGBColorSpace;
+        const labelMat = new THREE.MeshPhysicalMaterial({
+          map: labelTex,
+          roughness: 0.18,
+          clearcoat: 1,
+          clearcoatRoughness: 0.04,
+          transparent: true,
+          side: THREE.DoubleSide,
+        });
+        // arco da frente (-0.95 a 0.95 rad): a textura vai da esquerda para a direita
+        const band = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.566, 0.566, 2.04, 96, 1, true, -0.95, 1.9),
+          labelMat,
+        );
+        bottle.add(band);
+
+        // tampa preta com ranhuras horizontais
+        const capMat = new THREE.MeshPhysicalMaterial({ color: 0x08080a, metalness: 0.7, roughness: 0.3, clearcoat: 1 });
+        const ribMat = new THREE.MeshStandardMaterial({ color: 0x1d2128, metalness: 0.8, roughness: 0.35 });
+        const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.46, 0.48, 0.9, 96), capMat);
+        cap.position.y = 1.47;
+        bottle.add(cap);
+        for (let i = 0; i < 7; i++) {
+          const rib = new THREE.Mesh(new THREE.TorusGeometry(0.472, 0.012, 12, 96), ribMat);
+          rib.rotation.x = Math.PI / 2;
+          rib.position.y = 1.12 + i * 0.11;
+          bottle.add(rib);
+        }
 
         const size = () => {
           const w = canvas.clientWidth;
@@ -127,9 +162,9 @@ export function PerfumeBottle3D() {
           sy += (my - sy) * 0.05;
           const k = reduceMotion ? 0 : 1;
           bottle.rotation.y = k * t * 0.00018 + sx * 0.9;
-          bottle.rotation.x = 0.1 + sy * 0.5;
-          // -0.075 centraliza o frasco (base em -1.2, topo da tampa em 1.35)
-          bottle.position.y = -0.075 + k * Math.sin(t * 0.0011) * 0.08;
+          bottle.rotation.x = 0.08 + sy * 0.5;
+          // -0.41 centraliza o frasco (base em -1.1, topo da tampa em 1.92)
+          bottle.position.y = -0.41 + k * Math.sin(t * 0.0011) * 0.08;
           renderer.render(scene, camera);
         };
         raf = requestAnimationFrame(loop);
@@ -144,12 +179,13 @@ export function PerfumeBottle3D() {
               (obj.material as { dispose: () => void }).dispose();
             }
           });
+          labelTex.dispose();
           pmrem.dispose();
           renderer.dispose();
         };
       })
       .catch(() => {
-        // sem WebGL (ou three não carregou): o hero continua sem o frasco
+        // sem WebGL ou sem a imagem do rótulo: o hero continua sem o frasco
         canvas.style.display = "none";
       });
 
@@ -160,11 +196,5 @@ export function PerfumeBottle3D() {
     };
   }, []);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-0 h-full w-full"
-    />
-  );
+  return <canvas ref={canvasRef} aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full" />;
 }
