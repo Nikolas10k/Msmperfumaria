@@ -6,6 +6,7 @@ import { getCatalogProducts } from "@/lib/catalog/list-products";
 import { ProductCard } from "@/components/store/product-card";
 import { ExpressDeliveryCheck } from "@/components/store/express-delivery-check";
 import { LiquidRevealHero } from "@/components/store/liquid-reveal-hero";
+import { PerfumeBottle3D } from "@/components/store/perfume-bottle-3d";
 import { RoseAurora } from "@/components/store/rose-aurora";
 import { Button } from "@/components/ui/button";
 
@@ -54,6 +55,10 @@ export default async function HomePage() {
         )}
 
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bg via-bg/10 to-bg/50" />
+
+        {/* Frasco 3D no centro, atrás do texto: mesma ideia da pedra 3D do site
+            do condomínio, agora como objeto de perfume. */}
+        <PerfumeBottle3D />
 
         <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
           <span className="hero-reveal hero-reveal-1 mb-6 inline-flex items-center gap-2 rounded-full border border-rose-hairline bg-ink/50 px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.3em] text-rose-light backdrop-blur">
