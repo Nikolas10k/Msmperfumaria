@@ -1,14 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ShieldCheck, PackageCheck, Truck, BadgeCheck, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, BadgeCheck, PackageCheck, ShieldCheck, Truck } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getCatalogProducts } from "@/lib/catalog/list-products";
-import { ProductCard } from "@/components/store/product-card";
 import { ExpressDeliveryCheck } from "@/components/store/express-delivery-check";
-import { LiquidRevealHero } from "@/components/store/liquid-reveal-hero";
 import { PerfumeBottle3D } from "@/components/store/perfume-bottle-3d";
 import { RoseAurora } from "@/components/store/rose-aurora";
+import { FeaturedArch } from "@/components/store/featured-arch";
 import { Button } from "@/components/ui/button";
+import { onlyDigits } from "@/lib/utils";
 
 export const revalidate = 60;
 
@@ -16,7 +16,7 @@ export default async function HomePage() {
   const supabase = await createClient();
   const nowIso = new Date().toISOString();
 
-  const [{ data: heroBanner }, { data: categories }, bestsellers] = await Promise.all([
+  const [{ data: heroBanner }, { data: categories }, bestsellers, { data: settings }] = await Promise.all([
     supabase
       .from("banners")
       .select("*")
@@ -29,140 +29,201 @@ export default async function HomePage() {
       .maybeSingle(),
     supabase.from("categories").select("*").eq("is_active", true).order("position").limit(6),
     getCatalogProducts(supabase, { sort: "mais-vendidos" }),
+    supabase.from("store_settings").select("whatsapp_number, support_email, business_hours").eq("id", true).maybeSingle(),
   ]);
 
-  const featured = bestsellers.slice(0, 8);
+  const featured = bestsellers.slice(0, 8).map((p) => ({
+    id: p.id,
+    href: `/perfumes/${p.brandSlug}/${p.slug}`,
+    name: p.name,
+    brandName: p.brandName,
+    imageUrl: p.imageUrl,
+    price: p.minPrice,
+  }));
+
+  const whatsappHref = settings?.whatsapp_number
+    ? `https://wa.me/${onlyDigits(settings.whatsapp_number)}`
+    : null;
 
   return (
     <div>
-      <section className="relative h-[80vh] min-h-[560px] w-full overflow-hidden bg-bg sm:h-[92vh] sm:min-h-[640px]">
-        {heroBanner?.image_url ? (
-          <div className="absolute inset-0">
-            <Image src={heroBanner.image_url} alt={heroBanner.title} fill priority className="object-cover opacity-40" unoptimized />
-          </div>
-        ) : (
-          <>
-            {/* Revelação líquida: a mesma foto em duas leituras (escura por
-                baixo, vívida pintada pelo cursor) — ver liquid-reveal-hero.tsx.
-                Canvas 2D puro, sem WebGL, sem risco de travar. */}
-            <LiquidRevealHero src="/videos/hero-poster.jpg" />
-            {/* Mesma aurora do fundo, agora por cima do canvas — "screen" só
-                soma brilho rose, não esconde a imagem por baixo. Dá a
-                sensação de luz girando sobre a cena, igual à referência. */}
-            <RoseAurora />
-            <div className="pointer-events-none absolute inset-0 bg-bg/55" />
-          </>
+      {/* Hero no padrão do site: degradê vinho→rosé, frasco 3D no centro,
+          linhas de título em serif que sobem e botões em caixa com mola. */}
+      <section className="hero-bg relative h-[calc(100svh-120px)] min-h-[600px] w-full overflow-hidden md:h-[92svh] md:min-h-[640px]">
+        <RoseAurora />
+        {heroBanner?.image_url && (
+          <Image
+            src={heroBanner.image_url}
+            alt={heroBanner.title}
+            fill
+            priority
+            className="object-cover opacity-30"
+            unoptimized
+          />
         )}
-
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bg via-bg/10 to-bg/50" />
-
-        {/* Frasco 3D no centro, atrás do texto: mesma ideia da pedra 3D do site
-            do condomínio, agora como objeto de perfume. */}
         <PerfumeBottle3D />
 
-        <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
-          <span className="hero-reveal hero-reveal-1 mb-6 inline-flex items-center gap-2 rounded-full border border-rose-hairline bg-ink/50 px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.3em] text-rose-light backdrop-blur">
+        <p className="hero-reveal hero-reveal-3 lbl absolute left-[8%] top-[24%] hidden max-w-[16ch] text-paper/80 md:block">
+          Perfumes importados originais
+        </p>
+        <p className="hero-reveal hero-reveal-4 lbl absolute right-[16%] top-[30%] hidden max-w-[16ch] text-paper/80 md:block">
+          Nota fiscal em todos os pedidos
+        </p>
+
+        <div className="hero-reveal hero-reveal-2 absolute left-[3%] bottom-[-2%] hidden aspect-[4/5] w-[clamp(110px,15vw,230px)] -rotate-2 overflow-hidden rounded-t-[6px] shadow-[0_30px_50px_-20px_rgba(0,0,0,0.55)] lg:block">
+          <Image src="/videos/hero-poster.jpg" alt="" fill className="object-cover" sizes="230px" />
+        </div>
+        <div className="hero-reveal hero-reveal-2 absolute right-[3%] bottom-[-2%] hidden aspect-[5/4] w-[clamp(110px,15vw,230px)] rotate-2 overflow-hidden rounded-t-[6px] shadow-[0_30px_50px_-20px_rgba(0,0,0,0.55)] lg:block">
+          <Image src="/videos/hero-poster.jpg" alt="" fill className="object-cover object-[85%_50%]" sizes="230px" />
+        </div>
+
+        <div className="absolute inset-x-0 top-[12%] flex flex-col items-center px-4 text-center md:top-[30%]">
+          <span className="hero-reveal hero-reveal-1 lbl mb-6 inline-flex items-center gap-2 rounded-[7px] border border-white/20 bg-ink/40 px-4 py-1.5 text-paper/90 backdrop-blur">
             Entrega expressa em Brasília
           </span>
-          <h1 className="hero-reveal hero-reveal-2 max-w-4xl text-5xl font-bold uppercase leading-[0.95] tracking-tight text-text-primary sm:text-7xl lg:text-8xl">
-            Seu perfume.
-            <br />
-            <span className="text-gradient-rose">Sua assinatura.</span>
+          <h1 className="font-serif-display max-w-[1100px] text-[clamp(56px,11vw,190px)] text-paper [text-shadow:0_2px_30px_rgba(20,6,13,0.35)]">
+            <span className="hero-reveal hero-reveal-2 block">Seu perfume.</span>
+            <i className="hero-reveal hero-reveal-3 block text-rose-light">Sua assinatura.</i>
           </h1>
-          <p className="hero-reveal hero-reveal-3 mt-6 max-w-md text-xs uppercase tracking-[0.25em] text-text-secondary sm:text-sm">
-            Perfumes importados originais para quem escolhe deixar uma marca
-          </p>
-          <div className="hero-reveal hero-reveal-4 mt-10 flex flex-wrap justify-center gap-4">
-            <Link href="/perfumes">
-              <Button size="lg" className="group pr-2">
-                Explorar perfumes
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-ink/15 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
-                  <ArrowUpRight size={16} />
-                </span>
-              </Button>
-            </Link>
-            <Link href="/perfumes?ofertas=1">
-              <Button size="lg" variant="secondary">
-                Ver ofertas
-              </Button>
-            </Link>
-          </div>
+        </div>
+
+        <div className="hero-reveal hero-reveal-4 absolute inset-x-0 bottom-7 flex flex-col items-center justify-center gap-2 px-4 sm:flex-row">
+          <Link href="/perfumes" className="w-full sm:w-auto">
+            <Button size="lg" className="w-full sm:w-auto">
+              Explorar perfumes
+            </Button>
+          </Link>
+          <Link href="/perfumes?ofertas=1" className="w-full sm:w-auto">
+            <Button size="lg" variant="glass" className="w-full sm:w-auto">
+              Ver ofertas
+            </Button>
+          </Link>
         </div>
       </section>
 
-      <section className="mx-auto max-w-3xl px-4 py-10">
+      <section className="mx-auto max-w-3xl px-4 py-12">
         <ExpressDeliveryCheck />
       </section>
 
       {(categories ?? []).length > 0 && (
-        <section className="mx-auto max-w-7xl px-4 py-16">
-          <p className="mb-2 text-xs uppercase tracking-[0.3em] text-rose-light">Explore</p>
-          <h2 className="mb-8 font-serif-display text-3xl text-text-primary">Categorias</h2>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-            {(categories ?? []).map((category) => (
-              <Link
-                key={category.id}
-                href={`/perfumes?categoria=${category.slug}`}
-                className="product-frame-card group relative block aspect-square overflow-hidden rounded-xl border border-rose-hairline/20 bg-surface"
-              >
-                {category.image_url && (
-                  <Image
-                    src={category.image_url}
-                    alt={category.name}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                    unoptimized
-                  />
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent" />
-                <p className="absolute inset-x-0 bottom-0 p-3 text-center text-xs uppercase tracking-wide text-text-primary">
-                  {category.name}
-                </p>
-              </Link>
-            ))}
+        <section className="relative overflow-hidden bg-paper py-24 text-ink">
+          <div className="mx-auto max-w-[1360px] px-4 md:px-10">
+            <span className="lbl text-ink/55">Explore</span>
+            <h2 className="font-serif-display mt-3 text-[clamp(54px,8.4vw,140px)] leading-[0.92]">
+              Por <i>categoria</i>
+            </h2>
+
+            <ul className="mt-12 border-t border-ink/15">
+              {(categories ?? []).map((category, i) => (
+                <li key={category.id}>
+                  <Link
+                    href={`/perfumes?categoria=${category.slug}`}
+                    className="row-hover group flex items-baseline gap-6 border-b border-ink/15 px-0.5 py-6"
+                  >
+                    <span className="lbl w-8 text-ink/55">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="font-serif-display flex-1 text-[clamp(24px,2.6vw,38px)] leading-none tracking-[-0.015em]">
+                      {category.name}
+                    </span>
+                    <ArrowUpRight
+                      size={18}
+                      className="transition-transform duration-500 group-hover:translate-x-[3px] group-hover:-translate-y-[3px]"
+                    />
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
       )}
 
       {featured.length > 0 && (
-        <section className="mx-auto max-w-7xl px-4 py-16">
-          <div className="mb-8 flex items-end justify-between">
-            <div>
-              <p className="mb-2 text-xs uppercase tracking-[0.3em] text-rose-light">Curadoria</p>
-              <h2 className="font-serif-display text-3xl text-text-primary">Os mais desejados</h2>
-            </div>
-            <Link
-              href="/perfumes"
-              className="group hidden items-center gap-1 text-sm text-text-secondary hover:text-rose sm:flex"
-            >
-              Ver todos
-              <ArrowUpRight size={15} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-            {featured.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+        <section className="bg-bg py-24">
+          <div className="mx-auto max-w-[1360px] px-4 md:px-10">
+            <FeaturedArch items={featured} />
           </div>
         </section>
       )}
 
-      <section className="border-t border-border bg-surface py-14">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 sm:grid-cols-4">
-          {[
-            { icon: BadgeCheck, label: "100% original" },
-            { icon: ShieldCheck, label: "Compra segura" },
-            { icon: PackageCheck, label: "Nota fiscal em todos os pedidos" },
-            { icon: Truck, label: "Envio para todo o Brasil" },
-          ].map(({ icon: Icon, label }) => (
-            <div key={label} className="flex flex-col items-center gap-3 text-center">
-              <span className="flex h-12 w-12 items-center justify-center rounded-full border border-rose-hairline bg-ink/40">
-                <Icon className="text-rose" size={20} />
-              </span>
-              <p className="text-xs text-text-secondary">{label}</p>
-            </div>
-          ))}
+      <section className="mx-auto grid max-w-[1360px] gap-4 px-4 pb-24 md:grid-cols-[1.1fr_1fr] md:px-10">
+        <div className="product-frame-card relative flex min-h-[420px] flex-col justify-between gap-7 overflow-hidden rounded-[10px] bg-[radial-gradient(120%_90%_at_85%_10%,var(--color-rose-dark),var(--color-wine)_55%,#0a0a0a_100%)] p-8 md:p-12">
+          <div className="relative">
+            <span className="lbl text-paper/55">Ofertas</span>
+            <h2 className="font-serif-display mt-4 text-[clamp(36px,4.2vw,62px)] leading-[0.95]">
+              Perfumes com <i>desconto.</i>
+            </h2>
+            <p className="mt-4 max-w-[42ch] text-sm text-paper/70">
+              Os preços que estão em promoção agora, com a mesma originalidade e nota fiscal de sempre.
+            </p>
+          </div>
+          <div className="relative flex flex-wrap gap-2">
+            <Link href="/perfumes?ofertas=1">
+              <Button size="lg" variant="glass">Ver ofertas <ArrowUpRight size={16} /></Button>
+            </Link>
+          </div>
         </div>
+
+        <div className="product-frame-card flex min-h-[420px] flex-col justify-between gap-7 rounded-[10px] border border-border bg-surface p-8 md:p-12">
+          <div>
+            <span className="lbl text-text-muted">Entrega</span>
+            <h2 className="font-serif-display mt-4 text-[clamp(36px,4.2vw,62px)] leading-[0.95]">
+              Chega em <i>Brasília</i> no mesmo dia.
+            </h2>
+          </div>
+          <ul className="divide-y divide-border">
+            {[
+              { icon: Truck, label: "Entrega expressa em Brasília" },
+              { icon: PackageCheck, label: "Envio para todo o Brasil" },
+              { icon: BadgeCheck, label: "100% original" },
+              { icon: ShieldCheck, label: "Compra segura" },
+            ].map(({ icon: Icon, label }) => (
+              <li key={label} className="flex items-center gap-3 py-3 text-sm text-text-secondary">
+                <Icon size={16} className="text-rose-light" />
+                {label}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className="mx-auto grid max-w-[1360px] gap-12 border-t border-border px-4 py-24 md:grid-cols-2 md:gap-20 md:px-10">
+        <div>
+          <span className="lbl text-text-muted">Atendimento</span>
+          <h2 className="font-serif-display mt-3 text-[clamp(44px,5.4vw,92px)] leading-[0.92]">
+            Fale com <i>a loja</i>
+          </h2>
+          <p className="mt-6 max-w-[36ch] text-text-muted">
+            Tire dúvidas sobre fragrâncias, pedidos e entrega. Respondemos pelo WhatsApp ou pelo e-mail.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-2">
+            {whatsappHref && (
+              <a href={whatsappHref} target="_blank" rel="noreferrer">
+                <Button size="lg">Falar no WhatsApp</Button>
+              </a>
+            )}
+            <Link href="/perfumes">
+              <Button size="lg" variant="secondary">Ver catálogo</Button>
+            </Link>
+          </div>
+        </div>
+
+        <ul className="grid content-start gap-7">
+          {settings?.support_email && (
+            <li className="border-b border-border pb-6">
+              <span className="lbl text-text-muted">E-mail</span>
+              <p className="font-serif-display mt-2 text-2xl">{settings.support_email}</p>
+            </li>
+          )}
+          {settings?.business_hours && (
+            <li className="border-b border-border pb-6">
+              <span className="lbl text-text-muted">Horário</span>
+              <p className="font-serif-display mt-2 text-2xl">{settings.business_hours}</p>
+            </li>
+          )}
+          <li className="border-b border-border pb-6">
+            <span className="lbl text-text-muted">Entrega</span>
+            <p className="font-serif-display mt-2 text-2xl">Brasília e todo o Brasil</p>
+          </li>
+        </ul>
       </section>
     </div>
   );

@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Sistema visual no padrão do site do Edifício Novo Centro Multiempresarial:
+   tipografia serif (Bodoni Moda) nos títulos, sans (Inter) no corpo, rótulos
+   pequenos em caixa-alta, linhas de título que sobem, arcos de imagem, listas
+   com hover, rodapé com palavra gigante. A paleta é a da MSM (rosé e ink). */
+
 :root {
   --color-bg: #0a0a0a;
   --color-surface: #131313;
@@ -11,11 +16,14 @@
   --color-rose: #d6336c;
   --color-rose-light: #ff6b93;
   --color-rose-dark: #8c1c4d;
+  --color-wine: #14060d;
   --color-text-primary: #f5f3ee;
   --color-text-secondary: #c9c5ba;
   --color-text-muted: #8f8b80;
   --color-success: #4f9d6e;
   --color-danger: #b6483f;
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 @theme inline {
@@ -29,22 +37,46 @@
   --color-rose: var(--color-rose);
   --color-rose-light: var(--color-rose-light);
   --color-rose-dark: var(--color-rose-dark);
+  --color-wine: var(--color-wine);
   --color-text-primary: var(--color-text-primary);
   --color-text-secondary: var(--color-text-secondary);
   --color-text-muted: var(--color-text-muted);
   --color-success: var(--color-success);
   --color-danger: var(--color-danger);
-  --font-serif: var(--font-playfair);
-  --font-sans: var(--font-geist);
+  --font-serif: var(--font-bodoni);
+  --font-sans: var(--font-inter);
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  background: var(--color-bg);
+}
+
+html,
+body {
+  overflow-x: clip;
 }
 
 body {
   background: var(--color-bg);
   color: var(--color-text-primary);
+  font-size: 15px;
+  line-height: 1.55;
 }
 
 .font-serif-display {
-  font-family: var(--font-serif), serif;
+  font-family: var(--font-serif), Didot, "Times New Roman", serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 0.92;
+}
+
+/* Rótulo pequeno em caixa-alta (ex.: "Galeria de Fotos", "Downloads"). */
+.lbl {
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .text-gradient-rose {
@@ -63,51 +95,316 @@ body {
   color: var(--color-ink);
 }
 
-/* Splash/loading da marca — todas as curvas são senoidais (ease-in-out em
-   ida e volta ao mesmo estado), por isso o loop nunca tem um corte visível. */
-@keyframes perfume-loader-rotate {
-  0%, 100% { transform: perspective(600px) rotateY(-14deg); }
-  50% { transform: perspective(600px) rotateY(14deg); }
+:focus-visible {
+  outline: 2px solid var(--color-rose-light);
+  outline-offset: 3px;
 }
 
-@keyframes perfume-loader-glow-pulse {
-  0%, 100% { opacity: 0.55; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.12); }
+/* ---------- HERO ---------- */
+/* Fundo em degradê vinho → rosé, como o degradê verde do site do condomínio. */
+.hero-bg {
+  background: linear-gradient(
+    180deg,
+    var(--color-wine) 0%,
+    var(--color-rose-dark) 34%,
+    var(--color-rose) 72%,
+    var(--color-rose-light) 100%
+  );
 }
 
-@keyframes perfume-loader-label-fade {
-  0%, 100% { opacity: 0.45; }
-  50% { opacity: 1; }
+.hero-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(60% 50% at 50% 70%, rgba(255, 220, 232, 0.22), transparent 70%);
+  pointer-events: none;
 }
 
-.perfume-loader-bottle {
-  animation: perfume-loader-rotate 6s ease-in-out infinite;
-  filter: drop-shadow(0 0 18px color-mix(in srgb, var(--color-rose) 55%, transparent));
-}
-
-.perfume-loader-glow {
-  animation: perfume-loader-glow-pulse 3.5s ease-in-out infinite;
-}
-
-.perfume-loader-label {
-  animation: perfume-loader-label-fade 3.5s ease-in-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .perfume-loader-bottle,
-  .perfume-loader-glow,
-  .perfume-loader-label {
-    animation: none;
+/* Entrada do hero: cada linha sobe revelada por clip-path (estilo "lines"
+   do site), com atraso crescente. */
+@keyframes hero-line-in {
+  from {
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(14%);
+  }
+  to {
+    clip-path: inset(0 0 0% 0);
+    transform: translateY(0);
   }
 }
 
-/* Aurora rose: véus de luz girando bem devagar, sobrepostos em "screen"
-   pra parecer brilho de verdade (não uma forma sólida) — mesma ideia de
-   efeito "aurora" usada em landing pages de SaaS modernas, só que só CSS
-   (sem WebGL, sem canvas) e na paleta rose/vinho da marca. Funciona em
-   dois contextos: como fundo (dentro de um wrapper com bg sólido, antes do
-   vídeo carregar) e por cima do vídeo (sem wrapper, o "screen" deixa só o
-   brilho passar e o vídeo aparece por baixo normalmente).  */
+.hero-reveal {
+  animation: hero-line-in 0.9s var(--ease-spring) both;
+}
+
+.hero-reveal-1 {
+  animation-delay: 0.05s;
+}
+
+.hero-reveal-2 {
+  animation-delay: 0.18s;
+}
+
+.hero-reveal-3 {
+  animation-delay: 0.3s;
+}
+
+.hero-reveal-4 {
+  animation-delay: 0.42s;
+}
+
+/* Revelação genérica ao rolar (bloco sobe, com leve blur). */
+.rv {
+  opacity: 0;
+  transform: translateY(22px);
+  filter: blur(8px);
+  transition:
+    opacity 1s var(--ease-out),
+    transform 1.2s var(--ease-spring),
+    filter 1s var(--ease-out);
+  transition-delay: var(--d, 0ms);
+}
+
+.rv.in {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* ---------- MENU E INTRO ---------- */
+/* Loader inicial de boas-vindas: painel vinho com a marca em serif que sobe
+   e revela o site (intro-loader.tsx). Conta uma vez por sessão do navegador. */
+.intro-loader {
+  transition: transform 1.1s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.intro-loader--exit {
+  transform: translateY(-100%);
+}
+
+@keyframes intro-loader-rise {
+  from {
+    opacity: 0;
+    transform: translateY(40%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.intro-loader__word {
+  display: block;
+  animation: intro-loader-rise 1s var(--ease-spring) 0.1s both;
+}
+
+.intro-loader__count {
+  animation: intro-loader-rise 0.7s var(--ease-spring) 0.25s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-loader,
+  .intro-loader__word,
+  .intro-loader__count {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* Menu em tela cheia (mobile e desktop): itens grandes em serif que entram
+   em sequência, como o menu do site. */
+.menu-overlay {
+  background: linear-gradient(180deg, var(--color-rose-dark), var(--color-wine) 60%, var(--color-bg));
+}
+
+@keyframes menu-item-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menu-item {
+  animation: menu-item-in 0.8s var(--ease-spring) both;
+  animation-delay: var(--d, 0ms);
+  transition: color 0.2s;
+}
+
+.menu-item:hover {
+  color: var(--color-rose-light);
+  font-style: italic;
+}
+
+.mobile-nav-overlay {
+  animation: mobile-nav-fade 0.45s ease both;
+}
+
+@keyframes mobile-nav-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---------- COMPONENTES ---------- */
+/* Mola no hover dos botões em pílula (componente Button). */
+.btn-spring {
+  transition:
+    transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.3s,
+    color 0.3s,
+    box-shadow 0.45s ease;
+}
+
+.btn-spring:hover {
+  transform: translateY(-2px) scale(1.035);
+}
+
+.btn-spring:active {
+  transform: translateY(0) scale(0.98);
+  transition-duration: 0.15s;
+}
+
+/* Vidro das pílulas do header e do hero: fundo translúcido com desfoque. */
+.pill-glass {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+.pill-glass:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+/* Campo de formulário com linha inferior (como os campos do site). */
+.ctl {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-text-primary) 22%, transparent);
+  padding: 9px 0;
+  font-size: 15px;
+  outline: none;
+  border-radius: 0;
+  transition: border-color 0.2s;
+}
+
+.ctl:focus {
+  border-color: var(--color-rose-light);
+}
+
+/* Arco: imagem em formato de porta/arco (topo redondo), usado em destaques. */
+.arch-frame {
+  border-radius: 999px 999px 6px 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Moldura de exibição dos perfumes: vinheta sutil e contorno na cor da marca. */
+.product-frame {
+  position: relative;
+  isolation: isolate;
+}
+
+.product-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-rose) 22%, transparent);
+  background:
+    radial-gradient(120% 60% at 50% 0%, color-mix(in srgb, white 9%, transparent), transparent 60%),
+    radial-gradient(130% 85% at 50% 115%, color-mix(in srgb, black 50%, transparent), transparent 60%);
+}
+
+.product-frame-card {
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s ease,
+    border-color 0.4s ease;
+  box-shadow: 0 18px 36px -24px rgba(0, 0, 0, 0.7);
+}
+
+.product-frame-card:hover {
+  transform: translateY(-5px);
+  box-shadow:
+    0 30px 55px -22px rgba(0, 0, 0, 0.8),
+    0 18px 40px -20px color-mix(in srgb, var(--color-rose) 30%, transparent);
+}
+
+/* Lista editorial com hover (como as listas de documentos do site). */
+.row-hover {
+  transition:
+    padding 0.6s var(--ease-spring),
+    background-color 0.3s;
+}
+
+.row-hover:hover {
+  padding-left: 12px;
+  background: color-mix(in srgb, var(--color-rose) 10%, transparent);
+}
+
+/* Sublinhado em "mola" nos links de navegação do header. */
+.nav-link-underline {
+  position: relative;
+}
+
+.nav-link-underline::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 2px;
+  height: 1px;
+  width: 0;
+  background: var(--color-rose-light);
+  transition:
+    width 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    left 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.nav-link-underline:hover::after {
+  left: 15%;
+  width: 70%;
+}
+
+/* Chip de filtro e opção selecionável: escala em mola, mais sutil. */
+.chip-spring {
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.chip-spring:hover {
+  transform: scale(1.04);
+}
+
+.chip-spring:active {
+  transform: scale(0.97);
+}
+
+/* Palavra gigante no rodapé. */
+.footer-word {
+  font-family: var(--font-serif), Didot, serif;
+  font-size: clamp(52px, 12.6vw, 232px);
+  line-height: 0.85;
+  letter-spacing: -0.035em;
+  white-space: nowrap;
+  text-align: center;
+  color: color-mix(in srgb, var(--color-text-primary) 92%, transparent);
+}
+
+/* Aurora de luz rosé girando atrás do conteúdo (usada em destaques). */
 .rose-aurora {
   position: absolute;
   inset: -30%;
@@ -153,155 +450,61 @@ body {
 }
 
 @keyframes aurora-spin-1 {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes aurora-spin-2 {
-  to { transform: rotate(-360deg); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .rose-aurora__ring--1,
-  .rose-aurora__ring--2 {
-    animation: none;
-  }
-}
-
-/* Moldura de exibição dos perfumes (cards de produto, galeria): vinheta
-   sutil (brilho suave no topo, sombra no rodapé) pra dar profundidade à
-   foto, mais um contorno fino na cor da marca — sem depender de fotografia
-   profissional por trás pra parecer premium. */
-.product-frame {
-  position: relative;
-  isolation: isolate;
-}
-
-.product-frame::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  border-radius: inherit;
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-rose) 22%, transparent);
-  background:
-    radial-gradient(120% 60% at 50% 0%, color-mix(in srgb, white 9%, transparent), transparent 60%),
-    radial-gradient(130% 85% at 50% 115%, color-mix(in srgb, black 50%, transparent), transparent 60%);
-}
-
-.product-frame-card {
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease, border-color 0.4s ease;
-  box-shadow: 0 18px 36px -24px rgba(0, 0, 0, 0.7);
-}
-
-.product-frame-card:hover {
-  transform: translateY(-5px);
-  box-shadow:
-    0 30px 55px -22px rgba(0, 0, 0, 0.8),
-    0 18px 40px -20px color-mix(in srgb, var(--color-rose) 30%, transparent);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .product-frame-card {
-    transition: none;
-  }
-  .product-frame-card:hover {
-    transform: none;
-  }
-}
-
-/* Loader inicial de boas-vindas: conta 0→100 em tela cheia e depois "sobe"
-   (clip-path fechando de baixo pra cima) revelando a loja por baixo — ver
-   intro-loader.tsx. Mostra uma vez por sessão do navegador. */
-.intro-loader {
-  transition: clip-path 0.65s cubic-bezier(0.76, 0, 0.24, 1), opacity 0.5s ease 0.15s;
-  clip-path: inset(0% 0% 0% 0%);
-}
-
-.intro-loader--exit {
-  clip-path: inset(0% 0% 100% 0%);
-  opacity: 0;
-}
-
-@keyframes intro-loader-rise {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
   to {
+    transform: rotate(-360deg);
+  }
+}
+
+/* Loader da marca (página de transição entre rotas). */
+@keyframes perfume-loader-rotate {
+  0%,
+  100% {
+    transform: perspective(600px) rotateY(-14deg);
+  }
+  50% {
+    transform: perspective(600px) rotateY(14deg);
+  }
+}
+
+@keyframes perfume-loader-glow-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
     opacity: 1;
-    transform: translateY(0);
+    transform: scale(1.12);
   }
 }
 
-.intro-loader__brand {
-  animation: intro-loader-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.intro-loader__count {
-  animation: intro-loader-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
-}
-
-.intro-loader__bar {
-  animation: intro-loader-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .intro-loader,
-  .intro-loader__brand,
-  .intro-loader__count,
-  .intro-loader__bar {
-    animation: none;
-    transition: none;
+@keyframes perfume-loader-label-fade {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
   }
 }
 
-/* Entrada do hero em "spring": cada linha sobe revelada por um clip-path
-   (não é um fade simples), com atraso crescente entre elas. */
-@keyframes hero-line-in {
-  from {
-    clip-path: inset(0 0 100% 0);
-    transform: translateY(14%);
-  }
-  to {
-    clip-path: inset(0 0 0% 0);
-    transform: translateY(0);
-  }
+.perfume-loader-bottle {
+  animation: perfume-loader-rotate 6s ease-in-out infinite;
+  filter: drop-shadow(0 0 18px color-mix(in srgb, var(--color-rose) 55%, transparent));
 }
 
-.hero-reveal {
-  animation: hero-line-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+.perfume-loader-glow {
+  animation: perfume-loader-glow-pulse 3.5s ease-in-out infinite;
 }
 
-.hero-reveal-1 {
-  animation-delay: 0.05s;
-}
-
-.hero-reveal-2 {
-  animation-delay: 0.18s;
-}
-
-.hero-reveal-3 {
-  animation-delay: 0.3s;
-}
-
-.hero-reveal-4 {
-  animation-delay: 0.42s;
-}
-
-/* Mola no hover de botões (overshoot no cubic-bezier) — classe de base do
-   componente Button, usada em todo o site. */
-.btn-spring {
-  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.45s ease;
-}
-
-.btn-spring:hover {
-  transform: translateY(-2px) scale(1.035);
-}
-
-.btn-spring:active {
-  transform: translateY(0) scale(0.98);
-  transition-duration: 0.15s;
+.perfume-loader-label {
+  animation: perfume-loader-label-fade 3.5s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -309,103 +512,40 @@ body {
   .hero-reveal-1,
   .hero-reveal-2,
   .hero-reveal-3,
-  .hero-reveal-4 {
+  .hero-reveal-4,
+  .perfume-loader-bottle,
+  .perfume-loader-glow,
+  .perfume-loader-label,
+  .rose-aurora__ring--1,
+  .rose-aurora__ring--2,
+  .mobile-nav-overlay {
     animation: none;
   }
 
-  .btn-spring {
+  .rv {
+    opacity: 1;
+    transform: none;
+    filter: none;
     transition: none;
+  }
+
+  .btn-spring,
+  .chip-spring,
+  .product-frame-card,
+  .nav-link-underline::after,
+  .menu-item {
+    transition: none;
+  }
+
+  .menu-item {
+    animation: none;
   }
 
   .btn-spring:hover,
-  .btn-spring:active {
-    transform: none;
-  }
-}
-
-/* Sublinhado em "mola" nos links de navegação do header: cresce do centro
-   pra fora, com leve overshoot. */
-.nav-link-underline {
-  position: relative;
-}
-
-.nav-link-underline::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: 2px;
-  height: 1px;
-  width: 0;
-  background: var(--color-rose);
-  transition: width 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), left 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.nav-link-underline:hover::after {
-  left: 15%;
-  width: 70%;
-}
-
-/* Chip de filtro (catálogo) e opção selecionável (checkout): mesma mola de
-   escala do btn-spring, só que mais sutil, pra uso em elementos menores. */
-.chip-spring {
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s ease, color 0.2s ease,
-    background-color 0.2s ease;
-}
-
-.chip-spring:hover {
-  transform: scale(1.04);
-}
-
-.chip-spring:active {
-  transform: scale(0.97);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .nav-link-underline::after {
-    transition: none;
-  }
-
-  .chip-spring {
-    transition: none;
-  }
-
+  .btn-spring:active,
   .chip-spring:hover,
-  .chip-spring:active {
+  .chip-spring:active,
+  .product-frame-card:hover {
     transform: none;
-  }
-}
-
-/* Menu mobile: painel desliza da esquerda com leve overshoot, overlay só
-   desvanece. */
-@keyframes mobile-nav-panel-in {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
-@keyframes mobile-nav-overlay-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.mobile-nav-panel {
-  animation: mobile-nav-panel-in 0.4s cubic-bezier(0.22, 1.12, 0.36, 1) both;
-}
-
-.mobile-nav-overlay {
-  animation: mobile-nav-overlay-in 0.3s ease both;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .mobile-nav-panel,
-  .mobile-nav-overlay {
-    animation: none;
   }
 }

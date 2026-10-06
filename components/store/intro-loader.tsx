@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
-import Image from "next/image";
 
 const SESSION_KEY = "msm-intro-seen";
 const COUNT_MS = 1700;
 const HOLD_MS = 280;
-const EXIT_MS = 650;
+const EXIT_MS = 1100;
 
 function easeOutQuart(t: number) {
   return 1 - Math.pow(1 - t, 4);
@@ -15,12 +14,11 @@ function easeOutQuart(t: number) {
 type Phase = "counting" | "holding" | "exiting" | "done";
 
 /**
- * Splash de entrada do site: conta 0→100 em tela cheia e depois "sobe"
- * revelando a loja por baixo (clip-path, ver .intro-loader no globals.css).
- * Mostra só uma vez por sessão do navegador (sessionStorage) e nunca se
- * prefers-reduced-motion — nesses casos o próprio useEffect pula direto
- * pra "done" sem desenhar nada extra, sem travar o conteúdo real que já
- * está renderizado por trás.
+ * Tela de entrada do site, no padrão do loader do condomínio: painel vinho com
+ * a marca em serif, contador de 0 a 100 no canto e saída que sobe revelando a
+ * loja por baixo (transform, ver .intro-loader no globals.css). Mostra só uma
+ * vez por sessão do navegador (sessionStorage) e nunca com prefers-reduced-motion.
+ * O conteúdo real já está renderizado por trás, então nada espera o loader.
  */
 export function IntroLoader({ children }: { children: ReactNode }) {
   const [phase, setPhase] = useState<Phase>("counting");
@@ -81,28 +79,16 @@ export function IntroLoader({ children }: { children: ReactNode }) {
       {phase !== "done" && (
         <div
           aria-hidden="true"
-          className={`intro-loader fixed inset-0 z-[100] flex flex-col items-center justify-center bg-bg ${
+          className={`intro-loader fixed inset-0 z-[100] flex items-center justify-center bg-rose-dark ${
             phase === "exiting" ? "intro-loader--exit" : ""
           }`}
         >
-          <div className="intro-loader__brand flex items-center gap-3">
-            <Image src="/logo.jpg" alt="" width={40} height={40} className="rounded-full" />
-            <span className="font-serif-display text-lg uppercase tracking-[0.35em] text-text-secondary">
-              MSM Perfumaria
-            </span>
-          </div>
-
-          <div
-            className="intro-loader__count mt-8 text-center font-serif-display text-[20vw] leading-none tabular-nums text-text-primary sm:text-[13vw]"
-            style={{ minWidth: "3ch" }}
-          >
+          <span className="intro-loader__word font-serif-display text-[clamp(34px,5vw,64px)] text-paper">
+            MSM Perfumaria
+          </span>
+          <span className="intro-loader__count lbl absolute bottom-6 right-7 text-paper/75 tabular-nums">
             {count}
-            <span className="ml-2 align-top text-[0.28em] text-rose-light">%</span>
-          </div>
-
-          <div className="intro-loader__bar mt-8 h-px w-40 overflow-hidden bg-border">
-            <div className="h-full bg-rose" style={{ width: `${count}%` }} />
-          </div>
+          </span>
         </div>
       )}
       {children}

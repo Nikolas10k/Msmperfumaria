@@ -6,23 +6,21 @@ import type {
   TextareaHTMLAttributes,
 } from "react";
 
-const fieldBase =
-  "w-full border border-border bg-surface text-sm text-text-primary placeholder:text-text-muted transition-colors duration-200 focus:border-rose focus:outline-none focus:ring-2 focus:ring-rose/15";
+// Campos com linha inferior, como os formulários do site do condomínio (.ctl).
+const fieldBase = "ctl text-text-primary placeholder:text-text-muted";
 
 export function Input({ className, ...props }: InputHTMLAttributes<HTMLInputElement>) {
-  return <input className={cn(fieldBase, "h-11 rounded-full px-5", className)} {...props} />;
+  return <input className={cn(fieldBase, "h-11", className)} {...props} />;
 }
 
 export function Textarea({ className, ...props }: TextareaHTMLAttributes<HTMLTextAreaElement>) {
-  return <textarea className={cn(fieldBase, "rounded-2xl px-5 py-3", className)} {...props} />;
+  return <textarea className={cn(fieldBase, "resize-y", className)} {...props} />;
 }
 
 export function Label({ className, ...props }: LabelHTMLAttributes<HTMLLabelElement>) {
-  return (
-    <label className={cn("mb-1.5 block text-xs uppercase tracking-wide text-text-secondary", className)} {...props} />
-  );
+  return <label className={cn("lbl mb-1 block text-text-muted", className)} {...props} />;
 }
 
 export function Select({ className, ...props }: SelectHTMLAttributes<HTMLSelectElement>) {
-  return <select className={cn(fieldBase, "h-11 rounded-full px-5", className)} {...props} />;
+  return <select className={cn(fieldBase, "h-11 bg-bg", className)} {...props} />;
 }
